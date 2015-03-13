@@ -1,0 +1,57 @@
+﻿<html>
+
+<head>
+	<title>Custom Projections</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d-latest-dev.js"></script>
+	<!-- <script type="text/javascript" src="xml3d-4.8-custom.js"></script> -->
+    <script type="text/javascript" src="xflow-projection.js"></script>
+
+    <script type="text/javascript">
+
+		function updateViewportSize(elem) {
+			var t = elem.clientWidth + " " + elem.clientHeight;
+			console.log("resize: " + t);
+			document.getElementById("viewport").innerText = t;
+		}
+		
+		function onloadevent(elem) {
+			console.log("onload");
+			updateViewportSize(elem);
+		}
+
+	</script>
+</head>
+
+<body>
+	<div id="myxml3d">
+		<xml3d id="myxml3dcanvas" activeView="#view0b" style="width: 100%; height: 100%; background-color:0xeeeeee;" onresize="updateViewportSize(this)" onload="onloadevent(this)">
+
+			<!-- Asset Instance -->
+			<model src="basic.xml#cube_asset"></model>
+			
+			<!-- Calculation of the ortho projection matrix using Xflow -->
+            <data id="ortho" compute="perspective = xflow.ortho()">
+				<float name="near">0.1</float>
+				<float name="far">100</float>
+				<!-- the viewport size is updated using onresize of the xml3d element -->
+				<float2 name="viewport" id="viewport">1 1</float2>
+			</data>
+
+			<!-- Views with different camera positioning and projections -->
+			
+			<view id="view0a" position="0 10 10" orientation="1 0 0 -0.7854"></view>
+			<view id="view0b" position="0 10 10" orientation="1 0 0 -0.7854" perspective="#ortho"></view>
+
+			<group style="transform: translate3d(0px, 10px, 10px) rotateX(-45deg)">
+				<view id="view1a"></view>
+				<view id="view1b" perspective="#ortho"></view>
+			</group>
+
+		</xml3d>
+	</div>
+</body>
+
+</html>
