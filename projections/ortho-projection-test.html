@@ -20,6 +20,7 @@
 		
 		function onloadevent(elem) {
 			console.log("onload");
+			XML3D.options.setValue("renderer-frustumCulling", false);
 			updateViewportSize(elem);
 		}
 
@@ -32,12 +33,13 @@
 
 			<!-- Asset Instance -->
 			<model src="basic.xml#cube_asset"></model>
+			<model src="10993-asset.xml#all" style="transform: scale3d(10, 0.02, 10) translate3d(-0.5, 0, -0.5);"></model>
 			
 			<!-- Calculation of the ortho projection matrix using Xflow -->
             <data id="ortho" compute="perspective = xflow.ortho()">
 				<float name="near">0.1</float>
 				<float name="far">100</float>
-				<float name="zoom">1</float>
+				<float name="vovy">4.0</float>
 				<!-- the viewport size is updated using onresize of the xml3d element -->
 				<float2 name="viewport" id="viewport">1 1</float2>
 			</data>
@@ -52,6 +54,17 @@
 				<view id="view1b" perspective="#ortho"></view>
 			</group>
 
+			
+			<lightshader id="light1" script="urn:xml3d:lightshader:directional">
+				<float3 name="intensity">0.4 0.4 0.4</float3>
+			</lightshader>
+			
+			<group style="transform: rotateY(25deg) rotateX(-65deg)" >
+				<light shader="#light1"></light>
+			</group>
+			<group style="transform: rotateY(-115deg) rotateX(-40deg)" >
+				<light shader="#light1"></light>
+			</group>
 		</xml3d>
 	</div>
 </body>
