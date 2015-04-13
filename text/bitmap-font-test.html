@@ -1,0 +1,45 @@
+﻿<html>
+
+<head>
+	<title>Text Rendering - Bitmap Fonts</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d-4.8-custom.js"></script>
+	<!-- <script type="text/javascript" src="xml3d-4.8-custom.js"></script> -->
+    <script type="text/javascript" src="xflow-text.js"></script>
+    <script type="text/javascript" src="xml3d-camera.js"></script>
+</head>
+
+<body>
+	<div id="myxml3d">
+		<xml3d id="myxml3dcanvas" style="width: 100%; height: 100%; background-color:0xeeeeee;">
+
+			<!-- Asset Instance -->
+			<model src="basic.xml#cube_asset"></model>
+			
+			<defs>
+				<shader id="text_shader" script="urn:xml3d:shader:diffuse">
+					<float3 name="diffuseColor">0 0 1</float3>
+					<float name="ambientIntensity">0.5686</float>
+					<float name="transparency">0.0</float>
+				</shader>
+			</defs>
+			
+			<data id="text" compute="position, normal, texcoord, index = xflow.text(resolution)">
+				<int name="resolution">32</int>
+			</data>
+			
+			<group style="transform: translateY(1px);" shader="#text_shader">
+				<mesh src="#text" type="triangles">
+					<float3 name="diffuseColor">0 0 1</float3>
+				</mesh>
+			</group>
+			
+			<!-- View with camera positioning -->
+			<view position="3 5 10" orientation="1 0 0 -0.3854"></view>
+		</xml3d>
+	</div>
+</body>
+
+</html>
