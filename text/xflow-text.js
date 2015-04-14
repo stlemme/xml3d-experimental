@@ -5,14 +5,17 @@
 var font = {
 	defaultGlyph: function() {
 		return {
-			width: 0.7,
+			width: 1.0,
 			x: 0.0,
 			y: 0.0
 		};
 	},
 	
 	getGlyph: function(char) { return null; },
-	glyphs: {}
+	glyphs: {},
+	
+	resolution: 32.0,
+	
 };
 
 
@@ -48,8 +51,7 @@ Xflow.registerOperator("xflow.text", {
 		var length = text.length;
 		var i, j;
 		var offx = 0.0, offv = 0, offi = 0;
-		var texsize = 2048.0;
-		var scale = resolution / texsize;
+		var scale = resolution / font.texSize;
 
 		for (j = 0; j < length; ++j)
 		{

@@ -20,7 +20,7 @@
 			
 			<defs>
 				<shader id="text_shader" script="urn:xml3d:shader:diffuse">
-					<float3 name="diffuseColor">0 0 1</float3>
+					<float3 name="diffuseColor">1 1 1</float3>
 					<float name="ambientIntensity">0.5686</float>
 					<float name="transparency">0.0</float>
 				</shader>
@@ -31,8 +31,12 @@
 			</data>
 			
 			<group style="transform: translateY(1px);" shader="#text_shader">
-				<mesh src="#text" type="triangles">
-					<float3 name="diffuseColor">0 0 1</float3>
+				<mesh type="triangles">
+					<data src="#text"></data>
+ 					<float3 name="diffuseColor">0 1 1</float3>
+					<!-- <texture name="diffuseTexture">
+						<img src="hitchicon2.png"/>
+					</texture> -->
 				</mesh>
 			</group>
 			
