@@ -16,13 +16,7 @@
 		<xml3d id="myxml3dcanvas" style="width: 800px; height: 600px; background-color: eeeeee;">
 
 			<!-- Asset Instance -->
-			<model src="basic.xml#cube_asset">
-				<data filter="keep(diffuseColor)">
-					<data filter="rename({diffuseTexture: bitmap})">
-						<data src="#text"></data>
-					</data>
-				</data>
-			</model>
+			<model src="basic.xml#cube_asset"></model>
 			
 			<defs>
 				<shader id="text_shader" script="urn:xml3d:shader:diffuse">
@@ -41,10 +35,7 @@
 			<group style="transform: translateY(1px);" shader="#text_shader">
 				<mesh type="triangles">
 					<data src="#text" filter="rename({diffuseTexture: bitmap})"></data>
- 					<float3 name="diffuseColor">0.9 0.9 0.9</float3>
-					<!-- <texture name="diffuseTexture">
-						<img src="tex01.jpg"/>
-					</texture> -->
+ 					<float3 name="diffuseColor">0 1 1</float3>
 				</mesh>
 			</group>
 			

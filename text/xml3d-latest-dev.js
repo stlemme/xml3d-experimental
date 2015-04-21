@@ -19286,6 +19286,7 @@ XML3D.shaders.register("diffuse", {
 		"  }",
 		"#endif",
 
+//		"  gl_FragColor = vec4(color, 1.0);",
 		"  gl_FragColor = vec4(color, alpha);",
 		"}"
 	].join("\n"),

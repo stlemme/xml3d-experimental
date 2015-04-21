@@ -4,9 +4,6 @@
 	<defs>
 		<shader id="red_shader" script="urn:xml3d:shader:diffuse">
 			<float3 name="diffuseColor">1 0 0</float3>
-			<!-- <texture name="diffuseTexture">
-				<img src="poi-marker.png"/>
-			</texture> -->
 			<float name="ambientIntensity">0.5686</float>
 			<float name="transparency">0.0</float>
 		</shader>
@@ -79,7 +76,7 @@
 	</data>
 	
 	<asset id="cube_asset">
-		<assetmesh meshtype="triangles" shader="#red_shader">
+		<assetmesh meshtype="triangles" shader="#red_shader" name="cube">
 			<data src="#mesh_cube"/>
 		</assetmesh>
 	</asset>

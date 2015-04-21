@@ -24,12 +24,13 @@ XML3D.Font = function ( fontFamily, resolution, baseline, fontSize ) {
 	
 	this.ctx = this.canvas.getContext('2d');
 	this.ctx.font = this.style;
-	this.ctx.grid
+	this.ctx.fillStyle = 'rgba(255,255,255,1)';
+	//this.ctx.addGrid(32);
 	
 	this.scale = this.resolution / this.texSize;
 	this.offx = 0;
 	this.offy = 0;
-	console.log(this);
+	// console.log(this);
 };
 
 
@@ -53,6 +54,11 @@ XML3D.Font.prototype.getGlyph = function( cp ) {
 	
 	var m = this.ctx.measureText(c);
 	console.log(m);
+
+	if (this.offx + m.width >= this.texSize) {
+		this.offy += this.resolution;
+		this.offx = 0;
+	}
 	
 	this.ctx.fillText(c, this.offx, this.offy + this.baseline);
 
@@ -86,13 +92,14 @@ function getFont(resolution, baseline, fontSize) {
 	console.log(baseline);
 	console.log(fontSize);
 	if (!font) {
-		font = new XML3D.Font("Tahoma", 32, 20, 30);
+		font = new XML3D.Font("Tahoma", 64, 50, 60);
 		// font = new XML3D.Font("Tahoma", resolution, baseline, fontSize);
 	}
 	return font;
 }
 
-var text = 'Hello World!';
+// var text = 'Hello World!';
+var text = 'Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH';
 
 
 Xflow.registerOperator("xflow.text", {
@@ -145,7 +152,7 @@ Xflow.registerOperator("xflow.text", {
 		var length = text.length;
 		var i, j;
 		var offx = 0.0, offv = 0, offi = 0;
-		var scale = font.resolution / font.texSize;
+		// var scale = font.resolution / font.texSize;
 
 		for (j = 0; j < length; ++j)
 		{
@@ -156,22 +163,22 @@ Xflow.registerOperator("xflow.text", {
 			for (i = 0; i < 4; ++i)
 			{
 				var x = i < 2 ? 0.0 : g.width;
-				var y = i % 2 ? 1.0 : 0.0;
+				var y = i % 2 ? 0.0 : 1.0;
 
 				console.log("cp: " + cp + ", offv: " + offv + ", i: " + i + ", offx: " + offx + ", x: " + x + ", y: " + y);
 				
 				var k = offv + i;
 				
 				position[3*k  ] = offx + x;
-				position[3*k+1] = y;
+				position[3*k+1] = 1.0 - y;
 				position[3*k+2] = 0.0;
 				
 				normal[3*k  ] = 0.0;
 				normal[3*k+1] = 0.0;
 				normal[3*k+2] = 1.0;
 				
-				texcoord[2*k  ] = g.x + x*scale;
-				texcoord[2*k+1] = g.y + y*scale;
+				texcoord[2*k  ] = g.x + x*font.scale;
+				texcoord[2*k+1] = 1.0 - (g.y + y*font.scale);
 			}
 			
 			offx += g.width;
@@ -197,8 +204,8 @@ Xflow.registerOperator("xflow.text", {
 		var d = bitmap.data;
 		d.set(tex.data);
 		
-		for (var i = 3; i < d.length; ++i)
-			d[i] = 255;
+		//for (var i = 3; i < d.length; i+=4)
+		//	d[i] = 255;
 		
         return true;
     }
