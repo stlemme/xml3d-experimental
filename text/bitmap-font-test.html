@@ -8,6 +8,7 @@
 	<script type="text/javascript" src="xml3d-latest-dev.js"></script>
 	<!-- <script type="text/javascript" src="xml3d-4.8-custom.js"></script> -->
     <script type="text/javascript" src="xflow-text.js"></script>
+    <script type="text/javascript" src="xflow-quad.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
 </head>
 
@@ -26,7 +27,7 @@
 				</shader>
 			</defs>
 			
-			<data id="text" compute="position, normal, texcoord, index, bitmap = xflow.text(resolution, baseline, fontsize)">
+			<data id="text" compute="position, normal, texcoord, bitmap = xflow.text(resolution, baseline, fontsize)">
 				<int name="resolution">32</int>
 				<int name="baseline">20</int>
 				<int name="fontsize">30</int>
@@ -34,7 +35,9 @@
 			
 			<group style="transform: translateY(1px);" shader="#text_shader">
 				<mesh type="triangles">
-					<data src="#text" filter="rename({diffuseTexture: bitmap})"></data>
+					<data compute="index = xflow.quads2triangles(position)">
+						<data src="#text" filter="rename({diffuseTexture: bitmap})"></data>
+					</data>
  					<float3 name="diffuseColor">0 1 1</float3>
 				</mesh>
 			</group>

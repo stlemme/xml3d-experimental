@@ -1,14 +1,15 @@
 var XML3D = XML3D || {};
+var Xflow = Xflow || {};
 
 (function() {
 
 
 XML3D.Font = function ( fontFamily, resolution, baseline, fontSize ) {
-	console.log(this);
-	console.log(fontFamily);
-	console.log(resolution);
-	console.log(baseline);
-	console.log(fontSize);
+	// console.log(this);
+	// console.log(fontFamily);
+	// console.log(resolution);
+	// console.log(baseline);
+	// console.log(fontSize);
 	this.resolution = resolution;
 	this.texSize = 512;
 
@@ -20,7 +21,7 @@ XML3D.Font = function ( fontFamily, resolution, baseline, fontSize ) {
 	this.canvas = document.createElement('canvas');
 	this.canvas.width = this.texSize;
 	this.canvas.height = this.texSize;
-	document.getElementById('debug').appendChild(this.canvas);
+	// document.getElementById('debug').appendChild(this.canvas);
 	
 	this.ctx = this.canvas.getContext('2d');
 	this.ctx.font = this.style;
@@ -33,27 +34,19 @@ XML3D.Font = function ( fontFamily, resolution, baseline, fontSize ) {
 	// console.log(this);
 };
 
-
-XML3D.Font.prototype.defaultGlyph = function() {
-	return {
-		width: 1.0,
-		x: 0.0,
-		y: 0.0
-	};
-};
-
-
 XML3D.Font.prototype.getGlyph = function( cp ) {
-	if (cp in this.glyphs)
+	if (cp in this.glyphs) {
+		// console.log("Reuse glyph for codepoint " + cp)
 		return this.glyphs[cp];
+	}
 	
-	console.log("Create glyph for codepoint " + cp)
+	// console.log("Create glyph for codepoint " + cp)
 	
 	var c = String.fromCharCode(cp);
-	console.log(this.ctx);
+	// console.log(this.ctx);
 	
 	var m = this.ctx.measureText(c);
-	console.log(m);
+	// console.log(m);
 
 	if (this.offx + m.width >= this.texSize) {
 		this.offy += this.resolution;
@@ -69,14 +62,14 @@ XML3D.Font.prototype.getGlyph = function( cp ) {
 	};
 	
 	this.glyphs[cp] = g;
-	console.log(g);
+	// console.log(g);
 
 	this.offx += Math.ceil(m.width);
 	if (this.offx >= this.texSize) {
 		this.offy += this.resolution;
 		this.offx = 0;
 	}
-	console.log(this.offx + ", " + this.offy);
+	// console.log(this.offx + ", " + this.offy);
 	
 	return g;
 };
@@ -107,7 +100,6 @@ Xflow.registerOperator("xflow.text", {
 		{type: 'float3', name: 'position', customAlloc: true},
 		{type: 'float3', name: 'normal', customAlloc: true},
 		{type: 'float2', name: 'texcoord', customAlloc: true},
-		{type: 'int', name: 'index', customAlloc: true},
 		{type: 'texture', name: 'bitmap', customAlloc: true}
 	],
 	
@@ -119,21 +111,18 @@ Xflow.registerOperator("xflow.text", {
 	
     alloc: function(sizes, resolution, baseline, fontsize)
     {
-		var chars = text.length;
-		var vertices = 4*chars;
+		var vertices = 4*text.length;
 		
 		sizes['position'] = vertices;
 		sizes['normal'] = vertices;
 		sizes['texcoord'] = vertices;
 		
-		sizes['index'] = 6*chars;
-
-		console.log(resolution);
-		console.log(baseline);
-		console.log(fontsize);
+		// console.log(resolution);
+		// console.log(baseline);
+		// console.log(fontsize);
 		
 		var font = getFont(resolution[0], baseline[0], fontsize[0]);
-		console.log(font);
+		// console.log(font);
 
 		// var samplerConfig = new Xflow.SamplerConfig;
 		// samplerConfig.setDefaults();
@@ -144,68 +133,57 @@ Xflow.registerOperator("xflow.text", {
 		};
 	},
 	
-    evaluate: function(position, normal, texcoord, index, bitmap, resolution, baseline, fontsize)
+    evaluate: function(position, normal, texcoord, bitmap, resolution, baseline, fontsize)
 	{
 		var font = getFont(resolution[0], baseline[0], fontsize[0])
-		console.log(font);
+		// console.log(font);
 		
 		var length = text.length;
 		var i, j;
-		var offx = 0.0, offv = 0, offi = 0;
-		// var scale = font.resolution / font.texSize;
+		var offx = 0.0;
+		var offp = 0, offn = 0; offt = 0;
 
 		for (j = 0; j < length; ++j)
 		{
 			var cp = text.charCodeAt(j);
 			var g = font.getGlyph(cp);
-			if (!g) g = font.defaultGlyph();
-				
+			// if (!g) g = font.defaultGlyph();
+			if (!g) continue;
+			
 			for (i = 0; i < 4; ++i)
 			{
 				var x = i < 2 ? 0.0 : g.width;
 				var y = i % 2 ? 0.0 : 1.0;
 
-				console.log("cp: " + cp + ", offv: " + offv + ", i: " + i + ", offx: " + offx + ", x: " + x + ", y: " + y);
+				// console.log("cp: " + cp + ", offv: " + offv + ", i: " + i + ", offx: " + offx + ", x: " + x + ", y: " + y);
 				
-				var k = offv + i;
+				//var k = offv + i;
 				
-				position[3*k  ] = offx + x;
-				position[3*k+1] = 1.0 - y;
-				position[3*k+2] = 0.0;
+				position[offp++] = offx + x;
+				position[offp++] = 1.0 - y;
+				position[offp++] = 0.0;
 				
-				normal[3*k  ] = 0.0;
-				normal[3*k+1] = 0.0;
-				normal[3*k+2] = 1.0;
+				normal[offn++] = 0.0;
+				normal[offn++] = 0.0;
+				normal[offn++] = 1.0;
 				
-				texcoord[2*k  ] = g.x + x*font.scale;
-				texcoord[2*k+1] = 1.0 - (g.y + y*font.scale);
+				texcoord[offt++] = g.x + x*font.scale;
+				texcoord[offt++] = 1.0 - (g.y + y*font.scale);
 			}
 			
 			offx += g.width;
-			
-			index[offi++] = offv+3;
-			index[offi++] = offv+1;
-			index[offi++] = offv+0;
-
-			index[offi++] = offv+0;
-			index[offi++] = offv+2;
-			index[offi++] = offv+3;
-
-			offv += 4;
 		}
 		
-		console.log(position);
-		console.log(index);
+		// console.log(position);
 		
 		var tex = font.getImageData();
-		console.log(tex);
+		// console.log(tex);
 		
-		console.log(bitmap);
+		// console.log(bitmap);
 		var d = bitmap.data;
 		d.set(tex.data);
-		
-		//for (var i = 3; i < d.length; i+=4)
-		//	d[i] = 255;
+		// for (var i = 0; i < d.length; i+=4)
+			// d[i] = 255; d[i+1] = 255; d[i+2] = 255;
 		
         return true;
     }
