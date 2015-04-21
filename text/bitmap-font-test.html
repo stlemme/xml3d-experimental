@@ -5,7 +5,7 @@
 
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 
-	<script type="text/javascript" src="xml3d-4.8-custom.js"></script>
+	<script type="text/javascript" src="xml3d-latest-dev.js"></script>
 	<!-- <script type="text/javascript" src="xml3d-4.8-custom.js"></script> -->
     <script type="text/javascript" src="xflow-text.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
@@ -13,10 +13,16 @@
 
 <body>
 	<div id="myxml3d">
-		<xml3d id="myxml3dcanvas" style="width: 100%; height: 100%; background-color:0xeeeeee;">
+		<xml3d id="myxml3dcanvas" style="width: 800px; height: 600px; background-color: eeeeee;">
 
 			<!-- Asset Instance -->
-			<model src="basic.xml#cube_asset"></model>
+			<model src="basic.xml#cube_asset">
+				<data filter="keep(diffuseColor)">
+					<data filter="rename({diffuseTexture: bitmap})">
+						<data src="#text"></data>
+					</data>
+				</data>
+			</model>
 			
 			<defs>
 				<shader id="text_shader" script="urn:xml3d:shader:diffuse">
@@ -26,16 +32,18 @@
 				</shader>
 			</defs>
 			
-			<data id="text" compute="position, normal, texcoord, index = xflow.text(resolution)">
+			<data id="text" compute="position, normal, texcoord, index, bitmap = xflow.text(resolution, baseline, fontsize)">
 				<int name="resolution">32</int>
+				<int name="baseline">20</int>
+				<int name="fontsize">30</int>
 			</data>
 			
 			<group style="transform: translateY(1px);" shader="#text_shader">
 				<mesh type="triangles">
-					<data src="#text"></data>
- 					<float3 name="diffuseColor">0 1 1</float3>
+					<data src="#text" filter="rename({diffuseTexture: bitmap})"></data>
+ 					<float3 name="diffuseColor">0.9 0.9 0.9</float3>
 					<!-- <texture name="diffuseTexture">
-						<img src="hitchicon2.png"/>
+						<img src="tex01.jpg"/>
 					</texture> -->
 				</mesh>
 			</group>
@@ -43,6 +51,8 @@
 			<!-- View with camera positioning -->
 			<view position="3 5 10" orientation="1 0 0 -0.3854"></view>
 		</xml3d>
+	</div>
+	<div id="debug" style="padding-top: 30px; background: 888888;">
 	</div>
 </body>
 
