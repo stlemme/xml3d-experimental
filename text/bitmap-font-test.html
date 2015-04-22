@@ -10,6 +10,19 @@
     <script type="text/javascript" src="xflow-text.js"></script>
     <script type="text/javascript" src="xflow-quad.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
+
+    <script type="text/javascript">
+	
+		function onload() {
+			var text = "Hello World!";
+			console.log(text);
+			
+			var elem1 = document.getElementById("label1");
+			
+		};
+		
+		window.addEventListener('load', onload);
+	</script>
 </head>
 
 <body>
@@ -31,6 +44,7 @@
 				<int name="resolution">32</int>
 				<int name="baseline">20</int>
 				<int name="fontsize">30</int>
+				<!-- <int name="text" id="label1"></int> -->
 			</data>
 			
 			<group style="transform: translateY(1px);" shader="#text_shader">
