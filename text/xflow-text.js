@@ -4,6 +4,20 @@ var Xflow = Xflow || {};
 (function() {
 
 
+XML3D.attachText = function( text, elemId ) {
+	console.log(elemId + ": " + text);
+	
+	var elem = document.getElementById(elemId);
+	if (!elem) return;
+	
+	var chars = new Int32Array(text.length);
+	for (var i = 0; i < text.length; ++i)
+		chars[i] = text.charCodeAt(i);
+	console.log(chars);
+	elem.setScriptValue(chars);
+};
+
+
 XML3D.Font = function ( fontFamily, resolution, baseline, fontSize ) {
 	// console.log(this);
 	// console.log(fontFamily);
@@ -92,7 +106,7 @@ function getFont(resolution, baseline, fontSize) {
 }
 
 // var text = 'Hello World!';
-var text = 'Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH';
+// var text = 'Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH';
 
 
 Xflow.registerOperator("xflow.text", {
@@ -106,10 +120,11 @@ Xflow.registerOperator("xflow.text", {
     params:  [
 		{type: 'int', src: 'resolution'},
 		{type: 'int', src: 'baseline'},
-		{type: 'int', src: 'fontsize'}
+		{type: 'int', src: 'fontsize'},
+		{type: 'int', src: 'text'}
     ],
 	
-    alloc: function(sizes, resolution, baseline, fontsize)
+    alloc: function(sizes, resolution, baseline, fontsize, text)
     {
 		var vertices = 4*text.length;
 		
@@ -133,7 +148,7 @@ Xflow.registerOperator("xflow.text", {
 		};
 	},
 	
-    evaluate: function(position, normal, texcoord, bitmap, resolution, baseline, fontsize)
+    evaluate: function(position, normal, texcoord, bitmap, resolution, baseline, fontsize, text)
 	{
 		var font = getFont(resolution[0], baseline[0], fontsize[0])
 		// console.log(font);
@@ -145,7 +160,7 @@ Xflow.registerOperator("xflow.text", {
 
 		for (j = 0; j < length; ++j)
 		{
-			var cp = text.charCodeAt(j);
+			var cp = text[j];
 			var g = font.getGlyph(cp);
 			// if (!g) g = font.defaultGlyph();
 			if (!g) continue;
@@ -174,16 +189,8 @@ Xflow.registerOperator("xflow.text", {
 			offx += g.width;
 		}
 		
-		// console.log(position);
-		
 		var tex = font.getImageData();
-		// console.log(tex);
-		
-		// console.log(bitmap);
-		var d = bitmap.data;
-		d.set(tex.data);
-		// for (var i = 0; i < d.length; i+=4)
-			// d[i] = 255; d[i+1] = 255; d[i+2] = 255;
+		bitmap.data.set(tex.data);
 		
         return true;
     }

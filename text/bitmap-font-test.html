@@ -14,11 +14,8 @@
     <script type="text/javascript">
 	
 		function onload() {
-			var text = "Hello World!";
-			console.log(text);
-			
-			var elem1 = document.getElementById("label1");
-			
+			XML3D.attachText("Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH", "label1");
+			XML3D.attachText("Agenten und Simulierte Realität", "label3");
 		};
 		
 		window.addEventListener('load', onload);
@@ -40,20 +37,29 @@
 				</shader>
 			</defs>
 			
-			<data id="text" compute="position, normal, texcoord, bitmap = xflow.text(resolution, baseline, fontsize)">
-				<int name="resolution">32</int>
-				<int name="baseline">20</int>
-				<int name="fontsize">30</int>
-				<!-- <int name="text" id="label1"></int> -->
-			</data>
-			
-			<group style="transform: translateY(1px);" shader="#text_shader">
-				<mesh type="triangles">
+			<asset id="text">
+				<assetmesh type="triangles" shader="#text_shader" name="textgeometry">
 					<data compute="index = xflow.quads2triangles(position)">
-						<data src="#text" filter="rename({diffuseTexture: bitmap})"></data>
+						<data filter="rename({diffuseTexture: bitmap})">
+							<data compute="position, normal, texcoord, bitmap = xflow.text(resolution, baseline, fontsize, text)">
+								<int name="resolution">32</int>
+								<int name="baseline">20</int>
+								<int name="fontsize">30</int>
+								<int name="text" id="label1">32</int>
+							</data>
+						</data>
 					</data>
  					<float3 name="diffuseColor">0 1 1</float3>
-				</mesh>
+				</assetmesh>
+			</asset>
+			
+			
+			<group style="transform: translateY(1px);">
+				<model src="#text">
+					<assetmesh name="textgeometry">
+						<int name="text" id="label3">69</int>
+					</assetmesh>
+				</model>
 			</group>
 			
 			<!-- View with camera positioning -->
