@@ -8,6 +8,8 @@
 	</shader>
 
 	<dataflow id="gentext" out="position, normal, texcoord, index, diffuseTexture">
+		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
+		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
 		<int name="resolution" param="true" />
 		<int name="baseline" param="true" />
 		<int name="fontsize" param="true" />
