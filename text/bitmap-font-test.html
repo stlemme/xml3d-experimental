@@ -7,9 +7,11 @@
 
 	<script type="text/javascript" src="xml3d-latest-dev.js"></script>
 	<!-- <script type="text/javascript" src="xml3d-4.8-custom.js"></script> -->
-    <script type="text/javascript" src="xflow-text.js"></script>
-    <script type="text/javascript" src="xflow-quad.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
+	<script type="text/javascript" src="xml3d-text.js"></script>
+
+	<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
+	<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
 
     <script type="text/javascript">
 	
@@ -29,36 +31,19 @@
 			<!-- Asset Instance -->
 			<model src="basic.xml#cube_asset"></model>
 			
-			<defs>
-				<shader id="text_shader" script="urn:xml3d:shader:diffuse">
-					<float3 name="diffuseColor">1 1 1</float3>
-					<float name="ambientIntensity">0.5686</float>
-					<float name="transparency">0.0</float>
-				</shader>
-			</defs>
-			
-			<asset id="text">
-				<assetmesh type="triangles" shader="#text_shader" name="textgeometry">
-					<data compute="index = xflow.quads2triangles(position)">
-						<data filter="rename({diffuseTexture: bitmap})">
-							<data compute="position, normal, texcoord, bitmap = xflow.text(resolution, baseline, fontsize, text)">
-								<int name="resolution">32</int>
-								<int name="baseline">20</int>
-								<int name="fontsize">30</int>
-								<int name="text" id="label1">32</int>
-							</data>
-						</data>
-					</data>
- 					<float3 name="diffuseColor">0 1 1</float3>
-				</assetmesh>
-			</asset>
-			
-			
 			<group style="transform: translateY(1px);">
-				<model src="#text">
-					<assetmesh name="textgeometry">
+				<model src="text.xml#bitmap">
+					<assetdata name="config">
+						<int name="text" id="label1">69</int>
+					</assetdata>
+				</model>
+			</group>
+
+			<group style="transform: translate3d(1.5, 0.5, 0.5);">
+				<model src="text.xml#bitmap">
+					<assetdata name="config">
 						<int name="text" id="label3">69</int>
-					</assetmesh>
+					</assetdata>
 				</model>
 			</group>
 			

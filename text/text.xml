@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+	<shader id="text_shader" script="urn:xml3d:shader:diffuse">
+		<float3 name="diffuseColor">1 1 1</float3>
+		<float name="ambientIntensity">0.5686</float>
+		<float name="transparency">0.0</float>
+	</shader>
+
+	<dataflow id="gentext" out="position, normal, texcoord, index, diffuseTexture">
+		<int name="resolution" param="true" />
+		<int name="baseline" param="true" />
+		<int name="fontsize" param="true" />
+		<int name="text" param="true" />
+		<compute>
+			position, normal, texcoord, diffuseTexture = xflow.text(resolution, baseline, fontsize, text);
+			index = xflow.quads2triangles(position);
+		</compute>
+	</dataflow>
+
+
+	<asset id="bitmap">
+		<assetdata name="config" compute="dataflow['#gentext']">
+			<int name="resolution">32</int>
+			<int name="baseline">20</int>
+			<int name="fontsize">30</int>
+			<int name="text">32</int>
+		</assetdata>
+		<assetmesh type="triangles" shader="#text_shader" name="textgeometry" includes="config">
+			<float3 name="diffuseColor">0 1 1</float3>
+		</assetmesh>
+	</asset>
+
+</xml3d>
