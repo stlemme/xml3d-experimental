@@ -1,0 +1,50 @@
+﻿<html>
+
+<head>
+	<title>Skybox - Polarmap</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d-latest-dev.js"></script>
+	<!-- <script type="text/javascript" src="xml3d-4.8-custom.js"></script> -->
+    <!-- <script type="text/javascript" src="xml3d-camera.js"></script> -->
+    <script type="text/javascript" src="xml3d-shaders-polarmap.js"></script>
+	<!-- <script type="text/javascript">
+		function onload()
+		{
+			var camController = XML3D.Xml3dSceneController.controllers[0];
+			camController.detach();
+			camController.mode = "walk";
+			camController.useKeys = false;
+			camController.attach();
+		}
+		
+		window.addEventListener('load', onload, false);
+	</script> -->
+
+</head>
+
+<body>
+	<div id="myxml3d">
+		<xml3d id="myxml3dcanvas" activeView="#view0b" style="width: 100%; height: 100%; background-color:0xeeeeee;">
+
+			<shader id="polarmap_shader" script="urn:xml3d:shader:polarmapping">
+				<texture name="polarmapTexture">
+					<img src="images/polarmap_20150510_122949.jpg"/>
+				</texture>
+			</shader>
+			
+			<asset id="polarmap_asset">
+				<assetmesh meshtype="triangles" shader="#polarmap_shader">
+					<data src="basic.xml#mesh_cube"/>
+				</assetmesh>
+			</asset>
+			
+			<model src="#polarmap_asset"></model>
+			
+			<view id="view0b"></view>
+		</xml3d>
+	</div>
+</body>
+
+</html>
