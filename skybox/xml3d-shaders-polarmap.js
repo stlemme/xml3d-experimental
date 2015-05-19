@@ -4,9 +4,10 @@ var XML3D = XML3D || {};
 
 (function() {
 
+
 XML3D.shaders.register("polarmapping", {
 
-	vertex : [
+	vertex: [
 		"attribute vec3 position;",
 
 		"varying vec3 fragPosition;",
@@ -14,32 +15,34 @@ XML3D.shaders.register("polarmapping", {
 		"uniform mat4 modelViewProjectionMatrix;",
 
 		"void main(void) {",
-		"    gl_Position = modelViewProjectionMatrix * vec4(position, 1.0);",
-		"    fragPosition = position;",
+		"   fragPosition = position;",
+		"   gl_Position = modelViewProjectionMatrix * vec4(position, 1.0);",
 		"}"
 	].join("\n"),
 
-	fragment : [
+	fragment: [
 		"uniform sampler2D polarmapTexture;",
 
 		"varying vec3 fragPosition;",
 
 		"void main(void) {",
-		"  vec3 color = 0.5 * fragPosition + vec3(0.5);",
-		"  gl_FragColor = vec4(color, 1.0);",
+		"    float PI = 3.14159265358979323846264;",
+		"    vec3 p = normalize(fragPosition);",
+		"    vec2 uv;",
+		"    uv.x = (atan(p.z, p.x) + PI) / (2.*PI);",
+		"    uv.y = (asin(p.y) + 0.5*PI) / PI;",
+		"    vec3 color = texture2D(polarmapTexture, uv).rgb;",
+		"    gl_FragColor = vec4(color, 1.0);",
 		"}"
 	].join("\n"),
-	addDirectives: function() {},
-	hasTransparency: function(params) {
-		return false;
+	samplers: {
+        polarmapTexture : null
 	},
 	uniforms: {
-	},
-	samplers: {
-		polarmapTexture : null
 	},
 	attributes: {
 	}
 });
+
 
 })();

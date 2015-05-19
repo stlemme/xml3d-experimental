@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+	<defs>
+		<shader id="polarmap_shader" script="urn:xml3d:shader:polarmapping"></shader>
+	</defs>
+	
+	<asset id="polarmap">
+		<assetdata name="config">
+			<texture name="polarmapTexture" wrapS="repeat">
+				<img src="images/backyard_stitch-1.jpg"/>
+			</texture>
+		</assetdata>
+		
+		<assetmesh meshtype="triangles" shader="#polarmap_shader" includes="config">
+			<data src="basic.xml#mesh_cube"/>
+		</assetmesh>
+	</asset>
+	
+</xml3d>
