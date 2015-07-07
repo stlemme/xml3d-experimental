@@ -21,7 +21,7 @@ XML3D.Font = function ( fontFamily, resolution, baseline, fontSize ) {
 	this.canvas = document.createElement('canvas');
 	this.canvas.width = this.texSize;
 	this.canvas.height = this.texSize;
-	// document.getElementById('debug').appendChild(this.canvas);
+	document.getElementById('debug').appendChild(this.canvas);
 	
 	this.ctx = this.canvas.getContext('2d');
 	this.ctx.font = this.style;
@@ -58,7 +58,8 @@ XML3D.Font.prototype.getGlyph = function( cp ) {
 	var g = {
 		x: this.offx / this.texSize,
 		y: this.offy / this.texSize,
-		width: m.width / this.resolution
+		width: m.width / this.resolution,
+		height: 1.0
 	};
 	
 	this.glyphs[cp] = g;
@@ -154,7 +155,7 @@ Xflow.registerOperator("xflow.text", {
 			for (i = 0; i < 4; ++i)
 			{
 				var x = i < 2 ? 0.0 : g.width;
-				var y = i % 2 ? 0.0 : 1.0;
+				var y = i % 2 ? 0.0 : g.height;
 
 				// console.log("cp: " + cp + ", offv: " + offv + ", i: " + i + ", offx: " + offx + ", x: " + x + ", y: " + y);
 				

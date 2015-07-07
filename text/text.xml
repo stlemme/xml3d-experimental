@@ -12,6 +12,8 @@
 		<int name="baseline" param="true" />
 		<int name="fontsize" param="true" />
 		<int name="text" param="true" />
+		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
+		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
 		<compute>
 			position, normal, texcoord, diffuseTexture = xflow.text(resolution, baseline, fontsize, text);
 			index = xflow.quads2triangles(position);
