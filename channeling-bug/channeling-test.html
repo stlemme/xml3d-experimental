@@ -1,0 +1,43 @@
+﻿<html>
+
+<head>
+	<title>Text Rendering - Bitmap Fonts</title>
+
+	<script type="text/javascript" src="http://xml3d.org/xml3d/script/xml3d-4.9.2.js"></script>
+	<script type="text/javascript" src="http://xml3d.org/xml3d/script/shade-0.2.js"></script>
+</head>
+
+<body>
+	<xml3d>
+
+		<dataflow id="gentext" out="position, normal, texcoord, index, diffuseTexture">
+			<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
+			<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
+			<compute>
+				position, normal, texcoord, diffuseTexture = xflow.text();
+				index = xflow.quads2triangles(position);
+			</compute>
+		</dataflow>
+		
+		<!-- E -->
+		<mesh type="triangles" shader="text.xml#shader-alphatest" style="transform: translate3d(1.5, 0.5, 0.5);">
+			<!-- When removing this diffuseColor override - it works -->
+			<float3 name="diffuseColor">0 0.57 0.57</float3>
+			<!-- When using the inlined dataflow above - it works -->
+			<data name="config" compute="dataflow['text.xml#gentext']"></data>
+		</mesh>
+
+		<!-- H -->
+		<mesh type="triangles" shader="text.xml#shader-distancefield" style="transform: translate3d(3, 0, 1);">
+			<!-- When removing this diffuseColor override - it works -->
+			<float3 name="diffuseColor">0 0.57 0.57</float3>
+			<!-- When using an inlined dataflow here - it does NOT work -->
+			<data name="config" compute="dataflow['text.xml#gendistfield']"></data>
+		</mesh>
+		
+		<!-- View with camera positioning -->
+		<view position="3 5 10" orientation="1 0 0 -0.3854"></view>
+	</xml3d>
+</body>
+
+</html>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+	<dataflow id="gentext" out="position, normal, texcoord, index, diffuseTexture">
+		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
+		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
+		<compute>
+			position, normal, texcoord, diffuseTexture = xflow.text();
+			index = xflow.quads2triangles(position);
+		</compute>
+	</dataflow>
+	
+	<script id="alphatest-shader-script" type="text/shade-javascript">
+	<![CDATA[
+		function shade(env) {
+			// when removing "unused" color - it works
+			var color = env.diffuseColor || new Vec3(0.5, 0.5, 0.5);
+			var texel = env.diffuseTexture ? env.diffuseTexture.sample2D(env.texcoord).rgb() : new Vec3(0.5, 0.5, 0.5);
+			return Shade.emissive(texel.rgb());
+		}
+	]]>
+	</script>
+
+    <shader id="shader-alphatest" script="#alphatest-shader-script">
+        <float3 name="diffuseColor">0 0 1</float3>
+    </shader>
+
+
+	<!-- ///////////////////////////////////////////////////////////////// -->
+	
+	<dataflow id="gendistfield" out="position, normal, texcoord, index, distfield">
+		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
+		<script src="xflow-distancefield.js" name="xflow.distancefield" type="text/javascript"></script>
+		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
+		<compute>
+			position, normal, texcoord, bitmap = xflow.text();
+			distfield = xflow.distancefield(bitmap);
+			index = xflow.quads2triangles(position);
+		</compute>
+	</dataflow>
+
+	<script id="distancefield-shader-script" type="text/shade-javascript">
+	<![CDATA[
+		function shade(env) {
+			// when removing "unused" color - it works
+			var color = env.diffuseColor || new Vec3(0.5, 0.5, 0.5);
+			var D = 0.5;
+			if (env.distfield) {
+				var texel = env.distfield.sample2D(env.texcoord);
+				D = texel.r();
+			}
+			return Shade.emissive(Math.abs(D));
+		}
+	]]>
+	</script>
+
+    <shader id="shader-distancefield" script="#distancefield-shader-script">
+        <float3 name="diffuseColor">0 0 1</float3>
+    </shader>
+
+</xml3d>
