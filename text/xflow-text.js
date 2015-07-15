@@ -82,9 +82,9 @@ XML3D.Font.prototype.getImageData = function() {
 var font = null;
 
 function getFont(resolution, baseline, fontSize) {
-	console.log(resolution);
-	console.log(baseline);
-	console.log(fontSize);
+	// console.log(resolution);
+	// console.log(baseline);
+	// console.log(fontSize);
 	if (!font) {
 		font = new XML3D.Font("Tahoma", 64, 50, 60);
 		// font = new XML3D.Font("Tahoma", resolution, baseline, fontSize);
@@ -151,6 +151,14 @@ Xflow.registerOperator("xflow.text", {
 			var g = font.getGlyph(cp);
 			// if (!g) g = font.defaultGlyph();
 			if (!g) continue;
+
+			// DEBUG:
+			// g = {
+				// x: 0.0,
+				// y: 0.0,
+				// width: 1.0,
+				// height: 1.0
+			// };
 			
 			for (i = 0; i < 4; ++i)
 			{

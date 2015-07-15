@@ -1,13 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xml3d xmlns="http://www.w3.org/1999/xhtml">
 
-	<shader id="text_shader" script="urn:xml3d:shader:diffuse">
-		<float3 name="diffuseColor">1 1 1</float3>
-		<float name="ambientIntensity">0.5686</float>
-		<float name="transparency">0.0</float>
-	</shader>
+	<data id="config">
+		<int name="resolution">32</int>
+		<int name="baseline">20</int>
+		<int name="fontsize">30</int>
+		<int name="text">32</int>
+	</data>
 
-	<dataflow id="gentext" out="position, normal, texcoord, index, diffuseTexture">
+
+	<!-- ///////////////////////////////////////////////////////////////// -->
+
+	<asset id="bitmap-naive">
+		<assetdata name="config" filter="rename({diffuseTexture:distfield})" compute="dataflow['#gentext']">
+			<data src="#config"></data>
+		</assetdata>
+		<assetmesh type="triangles" shader="#shader-diffuse" name="textgeometry" includes="config">
+			<float3 name="diffuseColor">0 0.57 0.57</float3>
+		</assetmesh>
+	</asset>
+	
+	<dataflow id="gentext" out="position, normal, texcoord, index, distfield">
 		<int name="resolution" param="true" />
 		<int name="baseline" param="true" />
 		<int name="fontsize" param="true" />
@@ -15,22 +28,86 @@
 		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
 		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
 		<compute>
-			position, normal, texcoord, diffuseTexture = xflow.text(resolution, baseline, fontsize, text);
+			position, normal, texcoord, distfield = xflow.text(resolution, baseline, fontsize, text);
+			index = xflow.quads2triangles(position);
+		</compute>
+	</dataflow>
+	
+    <shader id="shader-diffuse" script="urn:xml3d:shader:diffuse">
+		<float3 name="diffuseColor">0 1 0</float3>
+		<float name="ambientIntensity">1</float>
+		<float name="transparency">0.0</float>
+    </shader>
+
+
+	<!-- ///////////////////////////////////////////////////////////////// -->
+	
+	<asset id="bitmap-alphatest">
+		<assetdata name="config" compute="dataflow['#gentext']">
+			<data src="#config"></data>
+		</assetdata>
+		<assetmesh type="triangles" shader="#shader-alphatest" name="textgeometry" includes="config">
+			<float3 name="diffuseColor">0 0.57 0.57</float3>
+		</assetmesh>
+	</asset>
+
+	<script id="alphatest-shader-script" type="text/shade-javascript">
+	<![CDATA[
+		function shade(env) {
+			var color = env.diffuseColor || new Vec3(0.5, 0.5, 0.5);
+			var alpha = env.distfield ? env.distfield.sample2D(env.texcoord).a() : 1.0;
+
+			if (alpha < 0.5) return;
+
+			return Shade.emissive(color);
+		}
+	]]>
+	</script>
+
+    <shader id="shader-alphatest" script="#alphatest-shader-script">
+        <float3 name="diffuseColor">0 0 1</float3>
+    </shader>
+
+
+	<!-- ///////////////////////////////////////////////////////////////// -->
+	
+	<asset id="bitmap-distancefield">
+		<assetdata name="config" compute="dataflow['#gendistfield']">
+			<data src="#config"></data>
+		</assetdata>
+		<assetmesh type="triangles" shader="#shader-distancefield" name="textgeometry" includes="config">
+			<float3 name="diffuseColor">0 0.57 0.57</float3>
+		</assetmesh>
+	</asset>
+
+	<dataflow id="gendistfield" out="position, normal, texcoord, index, distfield">
+		<int name="resolution" param="true" />
+		<int name="baseline" param="true" />
+		<int name="fontsize" param="true" />
+		<int name="text" param="true" />
+		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
+		<script src="xflow-distancefield.js" name="xflow.distancefield" type="text/javascript"></script>
+		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
+		<compute>
+			position, normal, texcoord, bitmap = xflow.text(resolution, baseline, fontsize, text);
+			distfield = xflow.distancefield(bitmap);
 			index = xflow.quads2triangles(position);
 		</compute>
 	</dataflow>
 
+	<script id="distancefield-shader-script" type="text/shade-javascript">
+	<![CDATA[
+		function shade(env) {
+			var color = env.diffuseColor || new Vec3(0.5, 0.5, 0.5);
+			var D = env.distfield ? env.distfield.sample2D(env.texcoord).a() : 1.0;
+			if (D > 0.0) return;
+			return Shade.emissive(color);
+		}
+	]]>
+	</script>
 
-	<asset id="bitmap">
-		<assetdata name="config" compute="dataflow['#gentext']">
-			<int name="resolution">32</int>
-			<int name="baseline">20</int>
-			<int name="fontsize">30</int>
-			<int name="text">32</int>
-		</assetdata>
-		<assetmesh type="triangles" shader="#text_shader" name="textgeometry" includes="config">
-			<float3 name="diffuseColor">0 1 1</float3>
-		</assetmesh>
-	</asset>
+    <shader id="shader-distancefield" script="#distancefield-shader-script">
+        <float3 name="diffuseColor">0 0 1</float3>
+    </shader>
 
 </xml3d>
