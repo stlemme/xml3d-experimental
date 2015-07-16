@@ -12,7 +12,7 @@
 	<!-- ///////////////////////////////////////////////////////////////// -->
 
 	<asset id="bitmap-naive">
-		<assetdata name="config" filter="rename({diffuseTexture:distfield})" compute="dataflow['#gentext']">
+		<assetdata name="config" compute="dataflow['#gentext']">
 			<data src="#config"></data>
 		</assetdata>
 		<assetmesh type="triangles" shader="#shader-diffuse" name="textgeometry" includes="config">
@@ -20,7 +20,7 @@
 		</assetmesh>
 	</asset>
 	
-	<dataflow id="gentext" out="position, normal, texcoord, index, distfield">
+	<dataflow id="gentext" out="position, normal, texcoord, index, diffuseTexture">
 		<int name="resolution" param="true" />
 		<int name="baseline" param="true" />
 		<int name="fontsize" param="true" />
@@ -28,7 +28,7 @@
 		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
 		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
 		<compute>
-			position, normal, texcoord, distfield = xflow.text(resolution, baseline, fontsize, text);
+			position, normal, texcoord, diffuseTexture = xflow.text(resolution, baseline, fontsize, text);
 			index = xflow.quads2triangles(position);
 		</compute>
 	</dataflow>
@@ -55,7 +55,7 @@
 	<![CDATA[
 		function shade(env) {
 			var color = env.diffuseColor || new Vec3(0.5, 0.5, 0.5);
-			var alpha = env.distfield ? env.distfield.sample2D(env.texcoord).a() : 1.0;
+			var alpha = env.diffuseTexture ? env.diffuseTexture.sample2D(env.texcoord).a() : 1.0;
 
 			if (alpha < 0.5) return;
 

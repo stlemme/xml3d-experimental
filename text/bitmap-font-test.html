@@ -5,7 +5,8 @@
 
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 
-	<script type="text/javascript" src="xml3d-4.9.2.js"></script>
+	<!-- <script type="text/javascript" src="xml3d-4.9.2.js"></script> -->
+	<script type="text/javascript" src="xml3d-custom.js"></script>
 	<script type="text/javascript" src="shade-0.2.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
 	<script type="text/javascript" src="xml3d-text.js"></script>
@@ -35,40 +36,18 @@
 				</assetdata>
 			</model>
 
-<!--  			<model src="text.xml#bitmap-alphatest" style="transform: translate3d(1.5, 0.5, 0.5);">
+   			<model src="text.xml#bitmap-alphatest" style="transform: translate3d(1.5, 0.5, 0.5);">
 				<assetdata name="config">
 					<int name="text" id="label3">69</int>
 				</assetdata>
-			</model> -->
+			</model>
 			
-			<group style="transform: translate3d(1.5, 0.5, 0.5);">
-				<mesh type="triangles" shader="text.xml#shader-alphatest">
-					<float3 name="diffuseColor">0 0.57 0.57</float3>
-					<data name="config" compute="dataflow['text.xml#gentext']">
-						<int name="text" id="label3">69</int>
-						<data src="text.xml#config"></data>
-					</data>
-				</mesh>
-			</group>
-
-<!-- 			<model src="text.xml#bitmap-distancefield" style="transform: translate3d(3, 0, 1);">
+  			<model src="text.xml#bitmap-distancefield" style="transform: translate3d(3, 0, 1);">
 				<assetdata name="config">
 					<int name="text" id="label5">72</int>
 				</assetdata>
 			</model>
- -->			
 
- 			<group style="transform: translate3d(3, 0, 1);">
-				<mesh type="triangles" shader="text.xml#shader-distancefield">
-					<float3 name="diffuseColor">0 0.57 0.57</float3>
-					<data name="config" compute="dataflow['text.xml#gendistfield']">
-						<int name="text" id="label5">72</int>
-						<data src="text.xml#config"></data>
-					</data>
-				</mesh>
-			</group>
-
-			
 			<!-- View with camera positioning -->
 			<view position="3 5 10" orientation="1 0 0 -0.3854"></view>
 		</xml3d>
