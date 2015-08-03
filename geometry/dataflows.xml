@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+	<dataflow id="gen-sphere" out="position, normal, index">
+		<script name="xflow.sphere" type="text/javascript" src="xflow/sphere.js"></script>
+		<int name="segments" param="true"/>
+		<float name="phi" param="true"/>
+		<float name="theta" param="true"/>
+		<compute>
+			position, normal, index = xflow.sphere();
+		</compute>
+	</dataflow>
+
+	<dataflow id="gen-box" out="position, normal, index">
+		<int name="segments" param="true"/>
+		<float3 name="extend" param="true"/>
+		<compute>
+			position, normal, index = xflow.box();
+		</compute>
+	</dataflow>
+	
+</xml3d>
