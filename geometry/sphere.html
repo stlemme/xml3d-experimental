@@ -7,6 +7,7 @@
 
 	<script type="text/javascript" src="xml3d-4.9.3.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
+	<!-- <script name="xflow.sphere" type="text/javascript" src="xflow/sphere.js"></script> -->
 	<script name="xflow.box" type="text/javascript" src="xflow/box.js"></script>
 
 </head>
@@ -31,13 +32,10 @@
 					</assetdata>
 				</model>
 				
-
 				<mesh compute="dataflow['dataflows.xml#gen-sphere']">
-					<data name="export">
-						<int name="segments">8 6</int>
-						<float name="phi">0 1</float>
-						<float name="theta">0 1</float>
-					</data>
+					<int name="segments">8 6</int>
+					<float name="phi">0 1</float>
+					<float name="theta">0 1</float>
 				</mesh>
 			
 			</group>
