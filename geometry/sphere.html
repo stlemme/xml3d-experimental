@@ -5,11 +5,8 @@
 
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 
-	<script type="text/javascript" src="xml3d-4.9.3.js"></script>
+	<script type="text/javascript" src="xml3d-pre4.9.4.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
-	<!-- <script name="xflow.sphere" type="text/javascript" src="xflow/sphere.js"></script> -->
-	<script name="xflow.box" type="text/javascript" src="xflow/box.js"></script>
-
 </head>
 
 <body>
@@ -32,11 +29,11 @@
 					</assetdata>
 				</model>
 				
-				<mesh compute="dataflow['dataflows.xml#gen-sphere']">
-					<int name="segments">8 6</int>
-					<float name="phi">0 1</float>
-					<float name="theta">0 1</float>
-				</mesh>
+				<model src="geometry.xml#sphere">
+					<assetdata name="export">
+						<int name="segments">8 6</int>
+					</assetdata>
+				</model>
 			
 			</group>
 

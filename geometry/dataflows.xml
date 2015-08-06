@@ -12,6 +12,7 @@
 	</dataflow>
 
 	<dataflow id="gen-box" out="position, normal, index">
+		<script name="xflow.box" type="text/javascript" src="xflow/box.js"></script>
 		<int name="segments" param="true"/>
 		<float3 name="extend" param="true"/>
 		<compute>
