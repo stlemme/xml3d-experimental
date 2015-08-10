@@ -1,0 +1,135 @@
+﻿<html>
+
+<head>
+	<title>Geometry Generation</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d-4.9.3.js"></script>
+    <script type="text/javascript" src="xml3d-camera.js"></script>
+	<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+	<script name="xflow.box" type="text/javascript" src="../geometry/xflow/box.js"></script>
+	<script name="xflow.grid" type="text/javascript" src="grid.js"></script>
+	<script name="xflow.cloth" type="text/javascript" src="cloth.js"></script>
+
+	<script type="text/javascript">
+		var restDistance = 25;
+
+		var xSegs = 10; //
+		var ySegs = 10; //
+		
+		var globalTime;
+		var globalEpoch;
+		var windForce;
+		
+		function onload() {
+			$('#cloth-segments').text(xSegs + ' ' + ySegs);
+			$('#cloth-extend').text(xSegs*restDistance + ' ' + ySegs*restDistance);
+			
+			windForce = $('#wind-force');
+			globalTime = $('.global-time');
+			
+			globalEpoch = Date.now();
+			animate();
+		}
+
+
+		function animate() {
+			requestAnimationFrame( animate );
+
+			var time = Date.now() - globalEpoch;
+			globalTime.text(time);
+
+			var windStrength = Math.cos( time / 7000 ) * 200 + 400;
+			var windDir = XML3D.math.vec3.fromValues(Math.sin( time / 2000 ), Math.cos( time / 3000 ), 0.3+Math.abs(Math.sin( time / 1000 )));
+			XML3D.math.vec3.normalize(windDir, windDir);
+			XML3D.math.vec3.scale(windDir, windDir, windStrength);
+			windForce.text( windDir[0] + ' ' + windDir[1] + ' ' + windDir[2] );
+		}
+
+		
+		window.addEventListener('load', onload, true);
+	</script>
+</head>
+
+<body>
+	<div id="myxml3d">
+		<xml3d id="myxml3dcanvas" style="width: 800px; height: 600px; background-color: eeeeee;">
+
+			<shader id="pole-material" script="urn:xml3d:shader:diffuse">
+				<float3 name="diffuseColor">0.6 0.6 0.6</float3>
+				<float name="ambientIntensity">0.5686</float>
+				<float name="transparency">0.0</float>
+			</shader>
+
+			<group shader="#pole-material">
+
+				<asset id="box" src="../geometry/geometry.xml#box"></asset>
+
+				<asset id="pole" src="#box">
+					<assetdata name="export">
+						<float3 name="extend">5 375 5</float3>
+					</assetdata>
+				</asset>
+
+				<asset id="gg" src="#box">
+					<assetdata name="export">
+						<float3 name="extend">10 10 10</float3>
+					</assetdata>
+				</asset>
+
+				
+				<model src="#pole" style="transform: translate3d(-125, -62, 0);"></model>
+				<model src="#pole" style="transform: translate3d(125, -62, 0);"></model>
+			
+				<model src="#box" style="transform: translate3d(0, 125, 0);">
+					<assetdata name="export">
+						<float3 name="extend">255 5 5</float3>
+					</assetdata>
+				</model>
+
+				<model src="#gg" style="transform: translate3d(-125, -250, 0);"></model>
+				<model src="#gg" style="transform: translate3d(125, -250, 0);"></model>
+			</group>
+
+			<shader id="cloth-material" script="urn:xml3d:shader:phong">
+				<float3 name="diffuseColor">1 1 1</float3>
+				<float3 name="specularColor">0.012 0.012 0.012</float3>
+				<float3 name="emissiveColor">0.431 0.431 0.431</float3>
+				<float name="shininess">10</float>
+				<float name="ambientIntensity">0.256</float>
+				<float name="transparency">0.001</float>
+				<texture name="diffuseTexture" wraps="repeat" wrapt="repeat">
+					<img src="circuit_pattern.png">
+				</texture>
+			</shader>
+
+			<mesh shader="#cloth-material" style="transform: translate3d(0, 250, 0);">
+				<data compute="position, normal = xflow.cloth()">
+					<data compute="position, normal, texcoord, index = xflow.grid()">
+						<float2 id="cloth-extend" name="extend">1 1</float2>
+						<int id="cloth-segments" name="segments">1 1</int>
+					</data>
+					<float3 name="windforce" id="wind-force">0 0 0</float3>
+					<int name="pins">0 1 2 3 4 5 6 7 8 9 10</int>
+					<float name="time" class="global-time">0</float>
+					<float name="mass">0.1</float>
+					<float name="damping">0.03</float>
+				</data>
+			</mesh>
+
+			<!-- View with camera positioning -->
+			<view position="0 0 850" orientation="1 0 0 0"></view>
+
+			<lightshader id="light1" script="urn:xml3d:lightshader:directional">
+				<float3 name="intensity">0.4 0.4 0.4</float3>
+			</lightshader>
+			
+			<group style="transform: rotateY(25deg) rotateX(-65deg)" >
+				<light shader="#light1"></light>
+			</group>
+		</xml3d>
+	</div>
+</body>
+
+</html>
