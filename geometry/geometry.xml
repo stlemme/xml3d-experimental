@@ -18,4 +18,17 @@
 		<assetmesh compute="dataflow['dataflows.xml#gen-box']" includes="export"></assetmesh>
 	</asset>
 
+	<asset id="torus">
+		<assetdata name="export">
+			<int name="radialsegments">64</int>
+			<float name="phi">0 1</float>
+			<int name="tubularsegments">16</int>
+			<float name="radius">1</float>
+			<float name="tube">0.5</float>
+			<float name="theta">0 1</float>
+		</assetdata>
+		<assetmesh compute="dataflow['dataflows.xml#gen-torus']" includes="export"></assetmesh>
+	</asset>
+	
+
 </xml3d>
