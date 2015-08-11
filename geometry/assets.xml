@@ -7,7 +7,7 @@
 			<float name="phi">0 1</float>
 			<float name="theta">0 1</float>
 		</assetdata>
-		<assetmesh compute="dataflow['dataflows.xml#gen-sphere']" includes="export"></assetmesh>
+		<assetmesh compute="dataflow['http://stlemme.github.io/xflow-registry/dataflow/geometry.xml#gen-sphere']" includes="export"></assetmesh>
 	</asset>
 
 	<asset id="box">
@@ -15,7 +15,7 @@
 			<int name="segments">1 1 1</int>
 			<float3 name="extend">2 2 2</float3>
 		</assetdata>
-		<assetmesh compute="dataflow['dataflows.xml#gen-box']" includes="export"></assetmesh>
+		<assetmesh compute="dataflow['http://stlemme.github.io/xflow-registry/dataflow/geometry.xml#gen-box']" includes="export"></assetmesh>
 	</asset>
 
 	<asset id="torus">
@@ -27,7 +27,7 @@
 			<float name="tube">0.5</float>
 			<float name="theta">0 1</float>
 		</assetdata>
-		<assetmesh compute="dataflow['dataflows.xml#gen-torus']" includes="export"></assetmesh>
+		<assetmesh compute="dataflow['http://stlemme.github.io/xflow-registry/dataflow/geometry.xml#gen-torus']" includes="export"></assetmesh>
 	</asset>
 	
 
