@@ -8,7 +8,6 @@
 	<script type="text/javascript" src="xml3d-pre4.9.4.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
 	<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
-	<script name="xflow.grid" type="text/javascript" src="grid.js"></script>
 	<script name="xflow.cloth" type="text/javascript" src="cloth.js"></script>
 
 	<script type="text/javascript">
@@ -67,7 +66,14 @@
 			<model src="assets.xml#gg" style="transform: translate3d(-125, -250, 0);"></model>
 			<model src="assets.xml#gg" style="transform: translate3d(125, -250, 0);"></model>
 
-				
+			<model src="#carpet" style="transform: translate3d(0, 250, 0);">
+				<assetdata name="export">
+					<float3 name="windforce" id="wind-force">0 0 0</float3>
+					<float name="time" class="global-time">0</float>
+				</assetdata>
+			</model>
+			
+			
 			<shader id="cloth-material" script="urn:xml3d:shader:phong">
 				<float3 name="diffuseColor">1 1 1</float3>
 				<float3 name="specularColor">0.012 0.012 0.012</float3>
@@ -80,19 +86,16 @@
 				</texture>
 			</shader>
 
-			<mesh shader="#cloth-material" style="transform: translate3d(0, 250, 0);">
-				<data compute="position, normal = xflow.cloth()">
-					<data compute="position, normal, texcoord, index = xflow.grid()">
-						<float2 id="cloth-extend" name="extend">1 1</float2>
-						<int id="cloth-segments" name="segments">1 1</int>
-					</data>
-					<float3 name="windforce" id="wind-force">0 0 0</float3>
+			<asset id="carpet" src="assets.xml#cloth" shader="#cloth-material">
+				<assetdata name="export">
+					<float2 name="extend" id="cloth-extend">1 1</float2>
+					<int name="segments" id="cloth-segments">1 1</int>
 					<int name="pins">0 1 2 3 4 5 6 7 8 9 10</int>
-					<float name="time" class="global-time">0</float>
 					<float name="mass">0.1</float>
 					<float name="damping">0.03</float>
-				</data>
-			</mesh>
+				</assetdata>
+			</asset>
+
 
 			<!-- View with camera positioning -->
 			<view position="0 0 850" orientation="1 0 0 0"></view>
