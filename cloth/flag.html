@@ -7,8 +7,8 @@
 
 	<script type="text/javascript" src="xml3d-pre4.9.4.js"></script>
     <script type="text/javascript" src="xml3d-camera.js"></script>
+	<script type="text/javascript" src="shade-0.2.js"></script>
 	<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
-	<script name="xflow.grid" type="text/javascript" src="grid.js"></script>
 	<script name="xflow.cloth" type="text/javascript" src="cloth.js"></script>
 
 	<script type="text/javascript">
@@ -26,7 +26,7 @@
 			$('#cloth-extend').text(xSegs*restDistance + ' ' + ySegs*restDistance);
 
 			var pins = '';
-			for (var i = 0; i <= ySegs; i+=2)
+			for (var i = 0; i <= ySegs; i++)
 				pins += i*(xSegs+1) + ' ';
 			for (var i = 0; i <= xSegs; i++)
 				pins += ySegs*(xSegs+1)+i + ' ';
@@ -62,50 +62,62 @@
 	<div id="myxml3d">
 		<xml3d id="myxml3dcanvas" style="width: 800px; height: 600px; background-color: eeeeee;" activeview="#selected-view">
 
-			<model src="assets.xml#pole" style="transform: translate3d(-125, -62, 0);"></model>
-			<model src="assets.xml#gg" style="transform: translate3d(-125, -250, 0);"></model>
+			<script id="flag-material-script" type="text/shade-javascript">
+				function shade(env) {
+					var ka = env.ambientIntensity !== undefined ? env.ambientIntensity : 0.2;
+					var kd = env.diffuseIntensity !== undefined ? env.diffuseIntensity : 0.8;
+					var color = env.diffuseTexture ? env.diffuseTexture.sample2D(env.texcoord).rgb() : new Vec3(0.5, 0.5, 0.5);
+					var normal = env.normal ? env.normal : new Vec3(0, 0, -1);
+					
+					return Shade.emissive(color.mul(ka)).diffuse(color.mul(kd), normal, env.roughness);
+				}
+			</script>
 
-			<model src="assets.xml#box" style="transform: translate3d(22.5, 125, 0);">
-				<assetdata name="export">
-					<float3 name="extend">300 2 2</float3>
-				</assetdata>
-			</model>
-
-			<shader id="cloth-material" script="urn:xml3d:shader:diffuse">
-				<float3 name="diffuseColor">1 1 1</float3>
-				<float3 name="specularColor">0.012 0.012 0.012</float3>
-				<float3 name="emissiveColor">0.431 0.431 0.431</float3>
-				<float name="shininess">10</float>
-				<float name="ambientIntensity">0.5</float>
-				<float name="transparency">0</float>
-				<texture name="diffuseTexture" wraps="repeat" wrapt="repeat">
-					<img src="512px-Flag_of_Saarland.png">
+			<shader id="flag-material" script="#flag-material-script">
+				<float name="diffuseIntensity">0.95</float>
+				<float name="ambientIntensity">0.15</float>
+				<float name="roughness">0.85</float>
+				<texture name="diffuseTexture" wrapS="clamp" wrapT="clamp">
+					<img src="512px-Flag_of_Saarland-noise3.png">
 				</texture>
 			</shader>
-
-			<mesh shader="#cloth-material" style="transform: translate3d(25, 35.5, 0);">
-				<data compute="position, normal = xflow.cloth()">
-					<data compute="position, normal, texcoord, index = xflow.grid()">
-						<float2 id="cloth-extend" name="extend">1 1</float2>
-						<int id="cloth-segments" name="segments">1 1</int>
-					</data>
-					<float3 name="windforce" id="wind-force">0 0 0</float3>
+			
+			<asset id="flag" src="assets.xml#cloth" shader="#flag-material">
+				<assetdata name="export">
+					<float2 name="extend" id="cloth-extend">1 1</float2>
+					<int name="segments" id="cloth-segments">1 1</int>
 					<int name="pins" id="pins">0</int>
-					<float name="time" class="global-time">0</float>
-					<float name="mass">0.004</float>
-					<float name="damping">0.2</float>
-				</data>
-			</mesh>
+				</assetdata>
+			</asset>
+
+			<group style="transform: scale3d(0.1, 0.1, 0.1)">
+				<model src="assets.xml#pole" style="transform: translate3d(-127.5, -62, 0);"></model>
+				<model src="assets.xml#gg" style="transform: translate3d(-127.5, -250, 0);"></model>
+
+				<model src="assets.xml#box" style="transform: translate3d(23.25, 125, 0);">
+					<assetdata name="export">
+						<float3 name="extend">303.5 2 2</float3>
+					</assetdata>
+				</model>
+				
+				<model src="#flag" style="transform: translate3d(25, 34, 0);">
+					<assetdata name="export">
+						<float3 name="windforce" id="wind-force">0 0 0</float3>
+						<float name="time" class="global-time">0</float>
+					</assetdata>
+				</model>
+
+			</group>
 
 			<!-- View with camera positioning -->
-			<view position="0 0 850" orientation="1 0 0 0"></view>
-			<view id="selected-view" position="-486.4032897949219 403.162109375 568.658203125" orientation="-0.5635820031166077 -0.8061190247535706 -0.18040907382965088 0.853056196844724"></view>
+			<view id="default-view" position="0 0 85" orientation="1 0 0 0"></view>
+			<view id="selected-view" position="-48.64032897949219 40.3162109375 56.8658203125" orientation="-0.5635820031166077 -0.8061190247535706 -0.18040907382965088 0.853056196844724"></view>
 
 			<lightshader id="light1" script="urn:xml3d:lightshader:directional">
 				<float3 name="intensity">1 1 1</float3>
 			</lightshader>
 			
-			<group style="transform: rotateY(25deg) rotateX(-65deg)" >
+			<group style="transform: rotateY(25deg) rotateX(-35deg)" >
 				<light shader="#light1"></light>
 			</group>
 		</xml3d>

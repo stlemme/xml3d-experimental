@@ -21,4 +21,14 @@
 		</assetdata>
 	</asset>
 
+	<asset id="cloth" src="../geometry/assets.xml#grid">
+		<assetdata name="export">
+			<float3 name="windforce">0 0 0</float3>
+			<int name="pins">0</int>
+			<float name="time">0</float>
+			<float name="mass">0.004</float>
+			<float name="damping">0.2</float>
+		</assetdata>
+		<assetmesh name="mesh" compute="position, normal = xflow.cloth()"></assetmesh>
+	</asset>
 </xml3d>

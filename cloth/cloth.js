@@ -117,7 +117,7 @@ Cloth.prototype.satisifyConstrains = function (p1, p2, distance) {
 
 
 var tmpforce = vec3.create();
-var GRAVITY = vec3.fromValues(0, -981 * 1.4, 0);
+var GRAVITY = vec3.fromValues(0, -981, 0);
 
 Cloth.prototype.simulate = function (time, options) {
 	
@@ -190,7 +190,7 @@ Cloth.prototype.updateNormals = function() {
 		vec3.sub(U, B.position, A.position);
 		vec3.sub(V, C.position, A.position);
 		
-		vec3.cross(S, U, V);
+		vec3.cross(S, V, U);
 		vec3.normalize(S, S);
 		
 		vec3.add(A.normal, A.normal, S);
@@ -260,6 +260,8 @@ Xflow.registerOperator("xflow.cloth", {
 			out_normal[3*i+1] = n[1];
 			out_normal[3*i+2] = n[2];
 		}
+		
+		// console.log(out_normal);
 	}
 });
 
