@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+	<shader id="pole-material" script="urn:xml3d:shader:diffuse">
+		<float3 name="diffuseColor">0.6 0.6 0.6</float3>
+		<float name="ambientIntensity">0.5686</float>
+		<float name="transparency">0.0</float>
+	</shader>
+
+	<asset id="box" src="../geometry/assets.xml#box" shader="#pole-material"></asset>
+
+	<asset id="pole" src="#box">
+		<assetdata name="export">
+			<float3 name="extend">5 375 5</float3>
+		</assetdata>
+	</asset>
+
+	<asset id="gg" src="#box">
+		<assetdata name="export">
+			<float3 name="extend">10 10 10</float3>
+		</assetdata>
+	</asset>
+
+</xml3d>

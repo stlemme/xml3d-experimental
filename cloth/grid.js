@@ -25,62 +25,52 @@ Xflow.registerOperator("xflow.grid", {
 		// TODO: use triangle strips
         sizes['index'] = s*t*6;
         // sizes['index'] = (s*t) + (s-1)*(t-2);
+		
+		console.log(sizes);
     },
     evaluate: function(position, normal, texcoord, index, segments, extend) {
-		var s = segments[0]+1;
-        var t = (segments.length > 1) ? (segments[1] + 1) : s;
-		var l = s*t;
+		var s = segments[0];
+        var t = (segments.length > 1) ? (segments[1]) : s;
+		var rows = t+1, cols = s+1;
+		var vertices = rows*cols;
 		var u = extend[0];
 		var v = extend[1];
+		var i, j;
 		
+		var off = [0, 0, 0, 0];
+
         // Create Positions
-		for (var i = 0; i < l; i++) {
-			var off3 = i*3;
-			var off2 = i*2;
-			
-			var x = (i % s) / (s - 1);
-			var y = Math.floor(i / t) / (t - 1);
+		for (j = 0; j <= t; j++) {
+			for (i = 0; i <= s; i++) {
+				var x = i / s;
+				var y = j / t;
 
-			position[off3  ] = u*(x-0.5);
-			position[off3+1] = v*(y-0.5);
-			position[off3+2] = 0;
+				position[off[0]++] = u*(x-0.5);
+				position[off[0]++] = v*(y-0.5);
+				position[off[0]++] = 0;
 
-			normal[off3    ] = 0;
-			normal[off3+1  ] = 0;
-			normal[off3+2  ] = -1;
+				normal[off[1]++  ] = 0;
+				normal[off[1]++  ] = 0;
+				normal[off[1]++  ] = -1;
 
-            texcoord[off2  ] = x;
-            texcoord[off2+1] = 1.0 - y;
+				texcoord[off[2]++] = x;
+				texcoord[off[2]++] = y;
+			}
 		}
 
         // Create Indices for triangles
-		var tl = (s-1) * (t-1);
-		var offset = 0;
-		for(var i = 0; i < tl; i++) {
-			var base = i + Math.floor(i / (s-1));
-			index[offset++] = base + 1;
-			index[offset++] = base;
-			index[offset++] = base + s;
-			index[offset++] = base + s;
-			index[offset++] = base + s + 1;
-			index[offset++] = base + 1;
+		for (j = 0; j < t; j++) {
+			for (i = 0; i < s; i++) {
+				var base = j*cols + i;
+				index[off[3]++] = base + 1;
+				index[off[3]++] = base;
+				index[off[3]++] = base + cols;
+				index[off[3]++] = base + cols;
+				index[off[3]++] = base + cols + 1;
+				index[off[3]++] = base + 1;
+			}
 		}
 		
-		// var tl = (s-1) * (t-1);
-		// var offset = 0;
-		// for(var i = 0; i < t-1; i++) {
-			// for(var j = 0; j < s-1; j++) {
-				// var base = i*s + j;
-				// index[offset++] = base + s;
-				// index[offset++] = base;
-				// index[offset++] = base + 1;
-				// index[offset++] = base + 1;
-				// index[offset++] = base + s + 1;
-				// index[offset++] = base + s;
-			// }
-		// }
-		// console.log(offset);
-		// console.log(tl);
 		// Create Indices for trianglestrips
 		// var i = 0
 		// for (var row=0; row<t-1; row++) {
