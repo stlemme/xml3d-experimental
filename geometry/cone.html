@@ -1,0 +1,46 @@
+﻿<html>
+
+<head>
+	<title>Geometry Generation</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d-pre4.9.4.js"></script>
+    <script type="text/javascript" src="xml3d-camera.js"></script>
+</head>
+
+<body>
+	<div id="myxml3d">
+		<xml3d id="myxml3dcanvas" style="width: 800px; height: 600px; background-color: eeeeee;">
+
+			<shader id="gray-material" script="urn:xml3d:shader:diffuse">
+				<float3 name="diffuseColor">0.6 0.6 0.6</float3>
+				<float name="ambientIntensity">0.5686</float>
+				<float name="transparency">0.0</float>
+			</shader>
+
+			<group shader="#gray-material">
+
+				<model src="assets.xml#box" style="transform: translateY(-2);"></model>
+
+				<model src="assets.xml#cone-frustum" style="transform: translateY(-0.5);"></model>
+				<model src="assets.xml#cone-frustum" style="transform:  translateY(4) rotateX(180deg);"></model>
+				<model src="assets.xml#cone" style="transform: translateY(4.5);"></model>
+				
+			</group>
+
+			<!-- View with camera positioning -->
+			<view position="0 0 10" orientation="1 0 0 0"></view>
+
+			<lightshader id="light1" script="urn:xml3d:lightshader:directional">
+				<float3 name="intensity">0.4 0.4 0.4</float3>
+			</lightshader>
+			
+			<group style="transform: rotateY(25deg) rotateX(-65deg)" >
+				<light shader="#light1"></light>
+			</group>
+		</xml3d>
+	</div>
+</body>
+
+</html>

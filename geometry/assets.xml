@@ -30,5 +30,35 @@
 		<assetmesh compute="dataflow['http://stlemme.github.io/xflow-registry/dataflow/geometry.xml#gen-torus']" includes="export"></assetmesh>
 	</asset>
 	
+	<asset id="cone-frustum">
+		<assetdata name="export">
+			<int name="segments">64</int>
+			<float name="phi">0 1</float>
+			<float name="radius">2</float>
+			<float name="topradius">1</float>
+			<float name="height">2</float>
+		</assetdata>
+		<assetmesh compute="dataflow['http://stlemme.github.io/xflow-registry/dataflow/geometry.xml#gen-cone-frustum']" includes="export"></assetmesh>
+	</asset>
+	
+	<asset id="cone">
+		<assetdata name="export">
+			<int name="segments">64</int>
+			<float name="phi">0 1</float>
+			<float name="radius">2</float>
+			<float name="height">2</float>
+		</assetdata>
+		<assetmesh compute="dataflow['http://stlemme.github.io/xflow-registry/dataflow/geometry.xml#gen-cone-frustum']" includes="export">
+			<float name="topradius">0</float>
+		</assetmesh>
+	</asset>
+	
+	<asset id="grid">
+		<assetdata name="export">
+			<float2 name="extend">1 1</float2>
+			<int name="segments">1 1</int>
+		</assetdata>
+		<assetmesh name="mesh" compute="dataflow['http://stlemme.github.io/xflow-registry/dataflow/geometry.xml#gen-grid']" includes="export"></assetmesh>
+	</asset>
 
 </xml3d>
