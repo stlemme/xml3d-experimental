@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+	<!-- this one does not work //-->
+	<dataflow id="dataflow_generateStichedTileWireframe" out="position, normal, texcoord, barycentric">
+		<int name="lod" param="true" />
+		<int name="stitching" param="true" />
+		<float name="elevation" param="true" />
+		<float3 name="normal" param="true" />
+		<compute>
+			position2, normal2, texcoord2, index = xflow.stichedGrid(lod, stitching, elevation);
+			position, normal, texcoord, barycentric = xflow.deindex(position2, normal, texcoord2, index);
+		</compute>
+	</dataflow>
+	
+	<!-- this one does not work //-->
+	<dataflow id="dataflow_generateStichedTile" out="position, normal, texcoord">
+		<int name="lod" param="true" />
+		<int name="stitching" param="true" />
+		<float name="elevation" param="true" />
+		<compute>
+			position2, normal2, texcoord2, index2 = xflow.stichedGrid(lod, stitching, elevation);
+			position, normal, texcoord, barycentric = xflow.deindex(position2, normal2, texcoord2, index2);
+		</compute>
+	</dataflow>
+
+	<!-- this one works correctly //-->
+	<dataflow id="dataflow_generateStichedTileIndexed" out="position, normal, texcoord, index">
+		<int name="lod" param="true" />
+		<int name="stitching" param="true" />
+		<float name="elevation" param="true" />
+		<compute>
+			position, normal, texcoord, index = xflow.stichedGrid(lod, stitching, elevation);
+		</compute>
+	</dataflow>
+
+</xml3d>

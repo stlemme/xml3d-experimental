@@ -1,0 +1,100 @@
+﻿<html>
+
+<head>
+	<title>POI-Client Demo</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d-pre4.9.4.js"></script>
+
+	<script name="xflow.stichedGrid" src="stichedGrid.js" type="text/javascript"></script>
+	<script name="xflow.deindex" src="deindex-grid.js" type="text/javascript"></script>
+
+	<script type="text/javascript">
+	
+		var ground;
+		var counter = 0;
+		
+		function toogleTile(counter)
+		{
+			if (counter % 2 == 0) {
+			
+				var m = XML3D.createElement("model");
+				m.setAttribute("src", "13514-asset.xml#all");
+
+				var a = XML3D.createElement("asset");
+				a.setAttribute("name", "terrain");
+				m.appendChild(a);
+
+				var d = XML3D.createElement("assetdata");
+				d.setAttribute("name", "terrain_morph");
+				a.appendChild(d);
+
+				// overwriting asset properties results in a fast growing memory leak
+				var s = XML3D.createElement("int");
+				s.setAttribute("name", "stitching");
+				s.innerHTML = "0 1 0 0";
+				d.appendChild(s);
+
+				ground.appendChild(m);			
+			
+			} else {
+			
+				while (ground.firstChild)
+					ground.removeChild(ground.firstChild);
+				
+			}
+		}
+		
+		function onload()
+		{
+			ground = document.getElementById("ground");
+
+			var xml3d = document.getElementById("myxml3dcanvas");
+			
+			xml3d.addEventListener('framedrawn',
+				function (e) {
+					toogleTile(counter++);
+				},
+				false
+			);
+			
+		}
+
+		window.addEventListener('load', onload, false);
+
+	</script>
+</head>
+
+<body>
+	<div id="myxml3d">
+		
+		<xml3d id="myxml3dcanvas" activeView="#selectedView" style="width: 100%; height: 100%; background-color:0xeeeeee;">
+
+			<shader id="solid" script="urn:xml3d:shader:matte">
+				<float3 name="diffuseColor">0.5 0.5 0.5</float3>
+				<float3 name="color">0.5 0.5 0.5</float3>
+				<float name="ambientIntensity">0.5686</float>
+				<float name="transparency">0.0</float>
+			</shader>
+			
+			<group id="ground" style="transform: scale3d(1059, 0.1, 1059);" shader="#solid">
+			</group>
+			
+			<!-- Light and View -->
+			<view id="selectedView" position="1012 1072 1013" orientation="-0.928 0.323 0.187 1.117"></view>
+			
+			<lightshader id="light1" script="urn:xml3d:lightshader:directional">
+				<float3 name="intensity">1 1 1</float3>
+			</lightshader>
+			
+			<group style="transform: rotateX(-90deg)" >
+				<light shader="#light1"></light>
+			</group>
+
+		</xml3d>
+
+	</div>
+</body>
+
+</html>
