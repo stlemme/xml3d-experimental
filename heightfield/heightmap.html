@@ -1,22 +1,49 @@
 <html>
 
 <head>
+	<title>Heightfield Examples</title>
 	<!-- Style -->
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 	<!-- Scripts -->
 	<script type="text/javascript" src="xml3d-dev.js"></script>
 	<script type="text/javascript" src="camera.js"></script>
 	<script type="text/javascript" src="myxflow.js"></script>
-	<title>Heightfield Examples</title>
 	<script type="text/javascript">
 		window.addEventListener("load", function() {
 			var viewElem = document.getElementById("Camera");
-			window.DemoCamera = new XML3D.StandardCamera(viewElem, {
-				mode:"examine"
-			});
+			//window.DemoCamera = new XML3D.StandardCamera(viewElem, {
+			//	mode:"examine"
+			//});
 
 			XML3D.options.setValue("renderer-faceculling", "back");
 		});
+		
+		Xflow.registerOperator("xflow.fromAxisAngle", {
+			outputs: [ {type: 'float4', name: 'rotation'} ],
+			params:  [ {type: 'float4', source: 'rotation'} ],
+			evaluate: function(quat, axisAngle, info) {
+				throw new Error("Not used!");
+			},
+			evaluate_core: function(quat, axis) {
+				XML3D.math.quat.setAxisAngle(quat, axis, axis[3]);
+				XML3D.math.quat.normalize(quat, quat);
+			}
+		});
+		
+		Xflow.registerOperator("xflow.lookat", {
+			outputs: [ {type: 'float4x4', name: 'transform'} ],
+			params:  [ {type: 'float3', source: 'eye'},
+					   {type: 'float3', source: 'center'},
+					   {type: 'float3', source: 'up'} ],
+			evaluate: function(transform, eye, center, up) {
+				throw new Error("Not used!");
+			},
+			evaluate_core: function(transform, eye, center, up) {
+				XML3D.math.mat4.lookAt(transform, eye, center, up);
+				XML3D.math.mat4.invert(transform, transform);
+			}
+		});
+		
 	</script>
 </head>
 
@@ -54,8 +81,45 @@
 		</data>
 	</data>
 
-	<transform id="t_Camera" translation="29.752 14.970 31.171" rotation="-0.394 0.910 0.131 0.826"></transform>
-	<view id="Camera" transform="#t_Camera"></view>
+	<transform id="t_Camera_0"></transform>
+	<transform id="t_Camera_a" translation="29.752 14.970 31.171" rotation="-0.394 0.910 0.131 0.826"></transform>
+
+	<dataflow id="transform" out="transform">
+		<float3 name="translation" param="true"></float3>
+		<float4 name="rotation" param="true"></float4>
+		<compute>
+			quat = xflow.fromAxisAngle(rotation);
+			transform = xflow.createTransform(translation, quat);
+		</compute>
+	</dataflow>
+
+	<dataflow id="lookat" out="transform">
+		<float3 name="from" param="true">1 1 1</float3>
+		<float3 name="to" param="true">0 0 0</float3>
+		<float3 name="up">0 1 0</float3>
+		<compute>
+			transform = xflow.lookat(from, to, up);
+		</compute>
+	</dataflow>
+	
+	<data id="t_Camera_b" compute="transform = xflow.createTransform()">
+		<float3 name="translation">29.752 14.970 31.171</float3>
+		<data compute="xflow.fromAxisAngle()">
+			<float4 name="rotation">-0.394 0.910 0.131 0.826</float4>
+		</data>
+	</data>
+
+	<data id="t_Camera_c" compute="dataflow['#transform']">
+		<float3 name="translation">29.752 14.970 31.171</float3>
+		<float4 name="rotation">-0.394 0.910 0.131 0.826</float4>
+	</data>
+
+	<data id="t_Camera_d" compute="dataflow['#lookat']">
+		<float3 name="from">29.752 14.970 31.171</float3>
+		<float3 name="to">0 0 0</float3>
+	</data>
+	
+	<view id="Camera" transform="#t_Camera_d"></view>
 	
 	<group material="#Material" style="transform: scale3d(25, 25, 25);">
 		<mesh type="#surface">
