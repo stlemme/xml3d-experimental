@@ -1,0 +1,79 @@
+﻿<html>
+
+<head>
+	<title>POI-Client Demo</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d-4.9.1.js"></script>
+	<script type="text/javascript" src="camera.js"></script>
+	<script type="text/javascript">
+		var observerCallback = function (records, observer) {
+			for (var i = 0; i < records.length; ++i){
+				var node = records[i].target; // The node of which the result has changed
+				var result = records[i].result; // The data result of the observed node
+				var val = result.getValue('errormetric');
+				console.log('errormetric' + ': ' + val);
+			}
+		}
+		
+		function create(tagname, attrs) {
+			var elem = XML3D.createElement(tagname);
+			if (attrs != null) {
+				for (var k in attrs)
+					elem.setAttribute(k, attrs[k]);
+			}
+			return elem;
+		}
+		
+		var onload = function(evt) {
+			var group = document.querySelector('#tile');
+			
+			var model1 = create('model', {'src': '42362-asset.xml#plane'});
+			group.appendChild(model1);
+			
+			var model2 = create('model', {'src': '42362-asset.xml#buildings'});
+			group.appendChild(model2);
+			
+			var data = create('data', {'src': '42362-asset.xml#meta-data'});
+			var observer = new XML3DDataObserver(observerCallback, 'errormetric');
+			observer.observe(data);
+			// attaching the data node is not necessary
+			//group.appendChild(data);
+		}
+		window.addEventListener('load', onload);
+	</script>
+</head>
+
+<body>
+	<div id="myxml3d">
+		<xml3d id="myxml3dcanvas" activeView="#defaultView" style="width: 100%; height: 100%; background-color:0xeeeeee;" >
+
+			<!-- Asset Instance -->
+			<transform id="ground_tf_scale" scale="20 0.1 20"></transform>
+			<transform id="center_tile_tf" translation="-0.5 0 -0.5"></transform>
+			
+			<group id="ground" transform="#ground_tf_scale">
+				<group id="tile" transform="#center_tile_tf">
+				</group>
+			</group>
+			
+			<!-- Light and View -->
+			<view id="defaultView" position="9.318857192993164 11.63010311126709 20.072357177734375" orientation="-0.772652268409729 0.6338370442390442 0.03548542410135269 0.6390923836193999"></view>
+			
+			<lightshader id="light1" script="urn:xml3d:lightshader:directional">
+				<float3 name="intensity">0.9 0.9 0.9</float3>
+			</lightshader>
+			
+			<group style="transform: rotateX(-60deg)" >
+				<light shader="#light1"></light>
+			</group>
+
+		</xml3d>
+		<div id="attribution" class="attribution">
+			Data &copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors
+		</div>
+	</div>
+</body>
+
+</html>
