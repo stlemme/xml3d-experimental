@@ -5,7 +5,7 @@
 		<int name="resolution">32</int>
 		<int name="baseline">20</int>
 		<int name="fontsize">30</int>
-		<int name="text">32</int>
+		<string name="text">32</string>
 	</data>
 
 
@@ -15,7 +15,7 @@
 		<assetdata name="config" compute="dataflow['#gentext']">
 			<data src="#config"></data>
 		</assetdata>
-		<assetmesh type="triangles" shader="#shader-diffuse" name="textgeometry" includes="config">
+		<assetmesh type="triangles" material="#shader-diffuse" name="textgeometry" includes="config">
 			<float3 name="diffuseColor">0 0.57 0.57</float3>
 		</assetmesh>
 	</asset>
@@ -24,7 +24,7 @@
 		<int name="resolution" param="true" />
 		<int name="baseline" param="true" />
 		<int name="fontsize" param="true" />
-		<int name="text" param="true" />
+		<string name="text" param="true" />
 		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
 		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
 		<compute>
@@ -33,11 +33,11 @@
 		</compute>
 	</dataflow>
 	
-    <shader id="shader-diffuse" script="urn:xml3d:shader:diffuse">
+    <material id="shader-diffuse" model="urn:xml3d:shader:diffuse">
 		<float3 name="diffuseColor">0 1 0</float3>
 		<float name="ambientIntensity">1</float>
 		<float name="transparency">0.0</float>
-    </shader>
+    </material>
 
 
 	<!-- ///////////////////////////////////////////////////////////////// -->
@@ -46,7 +46,7 @@
 		<assetdata name="config" compute="dataflow['#gentext']">
 			<data src="#config"></data>
 		</assetdata>
-		<assetmesh type="triangles" shader="#shader-alphatest" name="textgeometry" includes="config">
+		<assetmesh type="triangles" material="#shader-alphatest" name="textgeometry" includes="config">
 			<float3 name="diffuseColor">0 0.57 0.57</float3>
 		</assetmesh>
 	</asset>
@@ -64,9 +64,9 @@
 	]]>
 	</script>
 
-    <shader id="shader-alphatest" script="#alphatest-shader-script">
+    <material id="shader-alphatest" model="#alphatest-shader-script">
         <float3 name="diffuseColor">0 0 1</float3>
-    </shader>
+    </material>
 
 
 	<!-- ///////////////////////////////////////////////////////////////// -->
@@ -75,7 +75,7 @@
 		<assetdata name="config" compute="dataflow['#gendistfield']">
 			<data src="#config"></data>
 		</assetdata>
-		<assetmesh type="triangles" shader="#shader-distancefield" name="textgeometry" includes="config">
+		<assetmesh type="triangles" material="#shader-distancefield" name="textgeometry" includes="config">
 			<float3 name="diffuseColor">0 0.57 0.57</float3>
 		</assetmesh>
 	</asset>
@@ -84,7 +84,7 @@
 		<int name="resolution" param="true" />
 		<int name="baseline" param="true" />
 		<int name="fontsize" param="true" />
-		<int name="text" param="true" />
+		<string name="text" param="true" />
 		<script src="xflow-text.js" name="xflow.text" type="text/javascript"></script>
 		<script src="xflow-distancefield.js" name="xflow.distancefield" type="text/javascript"></script>
 		<script src="xflow-quad.js" name="xflow.quads2triangles" type="text/javascript"></script>
@@ -106,8 +106,8 @@
 	]]>
 	</script>
 
-    <shader id="shader-distancefield" script="#distancefield-shader-script">
+    <material id="shader-distancefield" model="#distancefield-shader-script">
         <float3 name="diffuseColor">0 0 1</float3>
-    </shader>
+    </material>
 
 </xml3d>

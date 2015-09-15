@@ -9,7 +9,7 @@ Xflow.registerOperator("xflow.quads2triangles", {
 	],
 	
     params:  [
-		{type: 'float3', src: 'position'}
+		{type: 'float3', source: 'position'}
     ],
 	
     alloc: function(sizes, position)

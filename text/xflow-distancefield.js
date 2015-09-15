@@ -182,7 +182,7 @@ Xflow.registerOperator("xflow.distancefield", {
 	],
 	
     params:  [
-		{type: 'texture', name: 'image'}
+		{type: 'texture', source: 'image'}
     ],
 	
     alloc: function(sizes, image)

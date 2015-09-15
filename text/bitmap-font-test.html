@@ -5,18 +5,20 @@
 
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 
-	<!-- <script type="text/javascript" src="xml3d-4.9.2.js"></script> -->
-	<script type="text/javascript" src="xml3d-custom.js"></script>
+	<script type="text/javascript" src="xml3d-dev.js"></script>
 	<script type="text/javascript" src="shade-0.2.js"></script>
-    <script type="text/javascript" src="xml3d-camera.js"></script>
-	<script type="text/javascript" src="xml3d-text.js"></script>
+	<script type="text/javascript" src="../../xml3d-tools/camera.js"></script>
 
     <script type="text/javascript">
 	
 		function onload() {
-			XML3D.attachText("Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH", "label1");
-			XML3D.attachText("Agenten und Simulierte Realität", "label3");
-			XML3D.attachText("Saarbrücken, Germany", "label5");
+			var viewElem = document.getElementById("Camera");
+			window.DemoCamera = new XML3D.StandardCamera(viewElem, {
+				mode: "examine",
+				updateExaminePoint: false,
+				upVector: [0,1,0]
+			});
+
 		};
 		
 		window.addEventListener('load', onload);
@@ -25,31 +27,33 @@
 
 <body>
 	<div id="myxml3d">
-		<xml3d id="myxml3dcanvas" style="width: 800px; height: 600px; background-color: eeeeee;">
+		<xml3d id="myxml3dcanvas" view="#Camera" style="width: 800px; height: 600px; background-color: eeeeee;">
 
 			<!-- Asset Instance -->
-			<model src="basic.xml#cube_asset"></model>
+			<model src="basic.xml#box"></model>
 			
 			<model src="text.xml#bitmap-naive" style="transform: translateY(1px);">
 				<assetdata name="config">
-					<int name="text" id="label1">65</int>
+					<string name="text">Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH</string>
 				</assetdata>
 			</model>
 
-   			<model src="text.xml#bitmap-alphatest" style="transform: translate3d(1.5, 0.5, 0.5);">
+   			<model src="text.xml#bitmap-alphatest" style="transform: translate3d(1.5px, 0.5px, 0.5px);">
 				<assetdata name="config">
-					<int name="text" id="label3">69</int>
+					<string name="text">Agenten und Simulierte Realität</string>
 				</assetdata>
 			</model>
 			
   			<model src="text.xml#bitmap-distancefield" style="transform: translate3d(3, 0, 1);">
 				<assetdata name="config">
-					<int name="text" id="label5">72</int>
+					<string name="text">Saarbrücken, Germany</string>
 				</assetdata>
 			</model>
 
 			<!-- View with camera positioning -->
-			<view position="3 5 10" orientation="1 0 0 -0.3854"></view>
+			<transform id="Camera_tf" translation="3 5 10" rotation="1 0 0 -0.3854"></transform>
+			<view id="Camera" transform="#Camera_tf"></view>
+
 		</xml3d>
 	</div>
 	<div id="debug" style="padding-top: 30px; background: 888888;">
