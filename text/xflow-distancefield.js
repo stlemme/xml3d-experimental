@@ -167,7 +167,7 @@ function signed_distance_fields( in_img_acc, out_img_acc, width, height ) {
 		}
 	}
 
-	console.log(min_dist + " - " + max_dist);
+	// console.log(min_dist + " - " + max_dist);
 	// console.log('distanceFields', distanceFields);
 
 	// return distanceFields;

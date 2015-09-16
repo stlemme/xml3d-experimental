@@ -162,7 +162,8 @@ Xflow.registerOperator("xflow.text", {
 	
     alloc: function(sizes, resolution, baseline, fontsize, text)
     {
-		var vertices = 4*text[0].length;
+		text = "".concat(text);
+		var vertices = 4*text.length;
 		
 		sizes['position'] = vertices;
 		sizes['normal'] = vertices;
@@ -188,15 +189,15 @@ Xflow.registerOperator("xflow.text", {
 	{
 		var font = getFont(resolution[0], baseline[0], fontsize[0])
 		// console.log(font);
-		text = text[0];
+		// console.log(text)
+		text = "".concat(text);
+		// console.log(text)
 		
 		var length = text.length;
 		var i, j;
 		var offx = 0.0;
 		var offp = 0, offn = 0; offt = 0;
 		
-		// console.log(text)
-
 		for (j = 0; j < length; ++j)
 		{
 			var cp = text.codePointAt(j);

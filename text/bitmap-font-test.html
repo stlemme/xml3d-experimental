@@ -5,7 +5,7 @@
 
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 
-	<script type="text/javascript" src="xml3d-dev.js"></script>
+	<script type="text/javascript" src="xml3d-custom.js"></script>
 	<script type="text/javascript" src="shade-0.2.js"></script>
 	<script type="text/javascript" src="../../xml3d-tools/camera.js"></script>
 
@@ -15,7 +15,7 @@
 			var viewElem = document.getElementById("Camera");
 			window.DemoCamera = new XML3D.StandardCamera(viewElem, {
 				mode: "examine",
-				updateExaminePoint: false,
+				updateExaminePoint: true,
 				upVector: [0,1,0]
 			});
 
@@ -44,7 +44,7 @@
 				</assetdata>
 			</model>
 			
-  			<model src="text.xml#bitmap-distancefield" style="transform: translate3d(3, 0, 1);">
+  			<model src="text.xml#bitmap-distancefield" style="transform: translate3d(3px, 0px, 1px);">
 				<assetdata name="config">
 					<string name="text">Saarbrücken, Germany</string>
 				</assetdata>
