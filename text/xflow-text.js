@@ -70,7 +70,9 @@ XML3D.Font = function ( fontFamily, resolution, baseline, fontSize ) {
 	this.canvas = document.createElement('canvas');
 	this.canvas.width = this.texSize;
 	this.canvas.height = this.texSize;
-	document.getElementById('debug').appendChild(this.canvas);
+	var debug = document.getElementById('debug');
+	if (debug)
+		debug.appendChild(this.canvas);
 	
 	this.ctx = this.canvas.getContext('2d');
 	this.ctx.font = this.style;

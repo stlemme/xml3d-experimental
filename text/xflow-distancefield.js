@@ -167,7 +167,7 @@ function signed_distance_fields( in_img_acc, out_img_acc, width, height ) {
 		}
 	}
 
-	// console.log(min_dist + " - " + max_dist);
+	console.log(min_dist + " - " + max_dist);
 	// console.log('distanceFields', distanceFields);
 
 	// return distanceFields;
@@ -189,14 +189,14 @@ Xflow.registerOperator("xflow.distancefield", {
     {
         var samplerConfig = new Xflow.SamplerConfig;
         samplerConfig.setDefaults();
-        samplerConfig.minFilter = Xflow.constants.TEX_FILTER_TYPE.LINEAR;
-        samplerConfig.magFilter = Xflow.constants.TEX_FILTER_TYPE.LINEAR;
+        // samplerConfig.minFilter = Xflow.constants.TEX_FILTER_TYPE.LINEAR;
+        // samplerConfig.magFilter = Xflow.constants.TEX_FILTER_TYPE.LINEAR;
 		sizes['result'] = {
 			imageFormat : {
 				width: image.width,
-				height: image.height,
-                texelType: Xflow.constants.TEXTURE_TYPE.FLOAT,
-                texelFormat: Xflow.constants.TEXTURE_FORMAT.ALPHA
+				height: image.height //,
+                // texelType: Xflow.constants.TEXTURE_TYPE.FLOAT,
+                // texelFormat: Xflow.constants.TEXTURE_FORMAT.ALPHA
 			},
 			samplerConfig : samplerConfig
 		};
@@ -214,16 +214,15 @@ Xflow.registerOperator("xflow.distancefield", {
 		
 		var d_out = result.data;
 		var out_img_acc = function(x, y, val) {
-			d_out[y*w+x] = val;
+			var idx = 4*(y*w+x);
+			var v = Math.max(Math.min(192 - 20*val, 255), 0);
+			d_out[idx  ] = v;
+			d_out[idx+1] = v;
+			d_out[idx+2] = v;
+			d_out[idx+3] = 255;
 		}
 		
 		signed_distance_fields(in_img_acc, out_img_acc, w, h);
-		
-		// for (y=0; y<h; y++) {
-			// for (x=0; x<w; x++) {
-				// out_img_acc(x, y, in_img_acc(x, y)/255);
-			// }
-		// }
 		
 		// console.log(d_out);
 		// console.log(w + " " + h);

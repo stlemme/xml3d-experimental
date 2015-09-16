@@ -99,8 +99,9 @@
 	<![CDATA[
 		function shade(env) {
 			var color = env.diffuseColor || new Vec3(0.5, 0.5, 0.5);
-			var D = env.distfield ? env.distfield.sample2D(env.texcoord).a() : 1.0;
-			if (D > 0.0) return;
+			var D = env.distfield ? env.distfield.sample2D(env.texcoord).r() : 1.0;
+			// if (D > 0.0) return;
+			color = new Vec3(D);
 			return Shade.emissive(color);
 		}
 	]]>
