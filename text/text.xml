@@ -5,7 +5,7 @@
 		<int name="resolution">32</int>
 		<int name="baseline">20</int>
 		<int name="fontsize">30</int>
-		<string name="text">32</string>
+		<string name="text">[[undefined]]</string>
 	</data>
 
 
