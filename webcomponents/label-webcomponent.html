@@ -1,0 +1,80 @@
+﻿<html>
+
+<head>
+	<title>Text Rendering - Web Components</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d.js"></script>
+	<!-- <script type="text/javascript" src="/projects/xml3d.js/build/output/xml3d.js"></script> -->
+	<script type="text/javascript" src="shade-0.2.js"></script>
+	<script type="text/javascript" src="../../xml3d-tools/camera.js"></script>
+	
+	<script type="text/javascript" src="polymer/webcomponents-lite.js"></script>
+	<script>
+		window.Polymer = window.Polymer || {};
+		window.Polymer.dom = 'shadow';
+	</script>
+	<link rel="import" href="xml3d-label.html">
+	
+    <script type="text/javascript">
+	
+		function onload() {
+			var viewElem = document.getElementById("Camera");
+			window.DemoCamera = new XML3D.StandardCamera(viewElem, {
+				mode: "examine",
+				updateExaminePoint: true,
+				upVector: [0,1,0]
+			});
+
+			//var elems = document.querySelectorAll("model.label");
+			//var t = document.querySelector('template#xml3d-label');
+			//for (var i = 0; i < elems.length; i++) {
+			//	var root = elems[i].createShadowRoot();
+			//	var clone = document.importNode(t.content, true);
+			//	root.appendChild(clone);
+			//};
+		};
+		
+		window.addEventListener('load', onload);
+	</script>
+	
+	<style type="text/css">
+		:unresolved {
+			color: red;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div id="myxml3d">
+		<xml3d id="myxml3dcanvas" view="#Camera" style="width: 800px; height: 600px; background-color: eeeeee;">
+
+			<!-- Asset Instance -->
+			<model src="../text/basic.xml#box" onclick="document.querySelector('#label1').setAttribute('value', 'Hello World!');"></model>
+			
+			<!-- <x-comp id="label1" style="transform: translateY(1px);">
+				<string name="text">Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH</string>
+			</x-comp> -->
+
+			<x-comp id="label1" style="transform: translateY(1px);" value="DFKI GmbH"></x-comp>
+			
+			<group>
+				<model src="../text/text.xml#bitmap-alphatest" style="transform: translate3d(1.5px, 0.5px, 0.5px);">
+					<assetdata name="config">
+						<string name="text">Agenten und Simulierte Realität</string>
+					</assetdata>
+				</model>
+			</group>
+			
+			<!-- View with camera positioning -->
+			<transform id="Camera_tf" translation="3 5 10" rotation="1 0 0 -0.3854"></transform>
+			<view id="Camera" transform="#Camera_tf"></view>
+
+		</xml3d>
+	</div>
+	<!-- <div id="debug" style="padding-top: 30px; background: 888888;"></div> -->
+</body>
+
+</html>
