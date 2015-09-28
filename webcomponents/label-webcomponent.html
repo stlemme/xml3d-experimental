@@ -9,15 +9,15 @@
 	<script type="text/javascript" src="/projects/xml3d.js/build/output/xml3d.js"></script>
 	<script type="text/javascript" src="shade-0.2.js"></script>
 	<script type="text/javascript" src="../../xml3d-tools/camera.js"></script>
-	<!-- <script type="text/javascript" src="xml3d-transform.js"></script> -->
+	<script type="text/javascript" src="xml3d-webcomponents.js"></script>
 	
-	<script type="text/javascript" src="polymer/webcomponents-lite.js"></script>
+	<!-- <script type="text/javascript" src="polymer/webcomponents-lite.js"></script>
 	<script>
 		window.Polymer = window.Polymer || {};
 		window.Polymer.dom = 'shadow';
 	</script>
-	<link rel="import" href="xml3d-label.html">
-	<link rel="import" href="xml3d-transform.html">
+	<link rel="import" href="xml3d-label.html"> -->
+	<!-- <link rel="import" href="xml3d-transform.html"> -->
 	
     <script type="text/javascript">
 	
@@ -28,16 +28,17 @@
 				updateExaminePoint: true,
 				upVector: [0,1,0]
 			});
-
-			//var elems = document.querySelectorAll("model.label");
-			//var t = document.querySelector('template#xml3d-label');
-			//for (var i = 0; i < elems.length; i++) {
-			//	var root = elems[i].createShadowRoot();
-			//	var clone = document.importNode(t.content, true);
-			//	root.appendChild(clone);
-			//};
 		};
 		
+		Xflow.registerOperator('xflow.fromAxisAngle', {
+			outputs: [ {type: 'float4', name: 'rotation'} ],
+			params:  [ {type: 'float4', source: 'rotation'} ],
+			evaluate_core: function(quat, axis) {
+				XML3D.math.quat.setAxisAngle(quat, axis, axis[3]);
+				XML3D.math.quat.normalize(quat, quat);
+			}
+		});
+
 		window.addEventListener('load', onload);
 	</script>
 	
@@ -58,19 +59,51 @@
 					<string name="text">Agenten und Simulierte Realität</string>
 				</assetdata>
 			</asset>
+			
+			<template id="x-transform" translation="0 0 0" rotation="1 0 0 0">
+				<data filter="keep(transform)" compute="transform = xflow.createTransform()">
+					<float3 name="translation">{{translation}}</float3>
+					<data compute="xflow.fromAxisAngle()">
+						<float4 name="rotation">{{rotation}}</float4>
+					</data>
+				</data>
+			</template>
+			
+			<template id="x-label" value="empty label">
+				<mesh material="../text/text.xml#shader-alphatest">
+					<float3 name="diffuseColor">0 0.57 0.57</float3>
+					<data compute="dataflow['../text/text.xml#gentext']">
+						<data src="../text/text.xml#config"></data>
+						<string name="text">{{value}}</string>
+					</data>
+				</mesh>
+			</template>
+			
+			<template id="x-arc-pie">
+				<script type="text/javascript">
+					console.log("x-arc-pie script");
+				</script>
+				<model src="../text/basic.xml#box"></model>
+				<transform id="justifiedleft" translation="1 1 1"></transform>
+				<group transform="#justifiedleft">
+					<content select=".justifiedleft"></content>
+				</group>
+			</template>
 
 			<!-- Asset Instance -->
-			<model src="../text/basic.xml#box" onclick="Polymer.dom(document.querySelector('#label1')).textContent = 'Hello World!';"></model>
+			<model src="../text/basic.xml#box" onclick="document.querySelector('#label1').setAttribute('value', 'Hello World!');"></model>
 			
 			<!-- <x-group id="label1" style="transform: translateY(1px);">
 				<string name="text">Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH</string>
 			</x-group> -->
-
-			<x-group id="label1" style="transform: translateY(1px);" value="Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH"></x-group>
+			
+			<x-group data-src="#x-arc-pie" style="transform: translateY(4px);">
+				<x-group data-src="#x-label" id="label1" class="justifiedleft" value="Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH"></x-group>
+			</x-group>
 			
 			<transform translation="1.5 0 1.5" rotation="0 1 0 1.5" id="tfA"></transform>
 
-			<x-data translation="1.5 0 1.5" rotation="0 1 0 1.5" id="tfB"></x-data>
+			<x-data data-src="#x-transform" translation="1.5 0 1.5" rotation="0 1 0 1.5" id="tfB"></x-data>
 			
 			<group transform="#tfB">
 			<!-- <group style="transform: translate3d(1.5px, 0.5px, 0.5px);"> -->
