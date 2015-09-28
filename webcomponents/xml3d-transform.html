@@ -1,0 +1,32 @@
+<link rel="import" href="polymer/polymer.html">
+<dom-module id="x-data">
+	<template>
+		<style>
+			* {
+				display: none;
+			}
+		</style>
+		<data filter="keep(transform)" compute="transform = xflow.createTransform()">
+			<float3 name="translation">{{translation}}</float3>
+			<data compute="xflow.fromAxisAngle()">
+				<float4 name="rotation">{{rotation}}</float4>
+			</data>
+		</data>
+	</template>
+	<script>
+	Xflow.registerOperator('xflow.fromAxisAngle', {
+		outputs: [ {type: 'float4', name: 'rotation'} ],
+		params:  [ {type: 'float4', source: 'rotation'} ],
+		evaluate_core: function(quat, axis) {
+			XML3D.math.quat.setAxisAngle(quat, axis, axis[3]);
+			XML3D.math.quat.normalize(quat, quat);
+		}
+	});
+	Polymer({
+		properties: {
+			translation: { type: String, value: '0 0 0' },
+			rotation: { type: String, value: '1 0 0 0' }
+		}
+	});
+	</script>
+</dom-module>

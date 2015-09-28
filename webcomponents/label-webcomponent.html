@@ -5,10 +5,11 @@
 
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 
-	<script type="text/javascript" src="xml3d.js"></script>
-	<!-- <script type="text/javascript" src="/projects/xml3d.js/build/output/xml3d.js"></script> -->
+	<!-- <script type="text/javascript" src="xml3d.js"></script> -->
+	<script type="text/javascript" src="/projects/xml3d.js/build/output/xml3d.js"></script>
 	<script type="text/javascript" src="shade-0.2.js"></script>
 	<script type="text/javascript" src="../../xml3d-tools/camera.js"></script>
+	<!-- <script type="text/javascript" src="xml3d-transform.js"></script> -->
 	
 	<script type="text/javascript" src="polymer/webcomponents-lite.js"></script>
 	<script>
@@ -16,6 +17,7 @@
 		window.Polymer.dom = 'shadow';
 	</script>
 	<link rel="import" href="xml3d-label.html">
+	<link rel="import" href="xml3d-transform.html">
 	
     <script type="text/javascript">
 	
@@ -51,21 +53,28 @@
 	<div id="myxml3d">
 		<xml3d id="myxml3dcanvas" view="#Camera" style="width: 800px; height: 600px; background-color: eeeeee;">
 
-			<!-- Asset Instance -->
-			<model src="../text/basic.xml#box" onclick="document.querySelector('#label1').setAttribute('value', 'Hello World!');"></model>
-			
-			<!-- <x-comp id="label1" style="transform: translateY(1px);">
-				<string name="text">Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH</string>
-			</x-comp> -->
+			<asset id="text" src="../text/text.xml#bitmap-alphatest">
+				<assetdata name="config">
+					<string name="text">Agenten und Simulierte Realität</string>
+				</assetdata>
+			</asset>
 
-			<x-comp id="label1" style="transform: translateY(1px);" value="DFKI GmbH"></x-comp>
+			<!-- Asset Instance -->
+			<model src="../text/basic.xml#box" onclick="Polymer.dom(document.querySelector('#label1')).textContent = 'Hello World!';"></model>
 			
-			<group>
-				<model src="../text/text.xml#bitmap-alphatest" style="transform: translate3d(1.5px, 0.5px, 0.5px);">
-					<assetdata name="config">
-						<string name="text">Agenten und Simulierte Realität</string>
-					</assetdata>
-				</model>
+			<!-- <x-group id="label1" style="transform: translateY(1px);">
+				<string name="text">Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH</string>
+			</x-group> -->
+
+			<x-group id="label1" style="transform: translateY(1px);" value="Deutsches Forschungszentrum für Künstliche Intelligenz (DFKI) GmbH"></x-group>
+			
+			<transform translation="1.5 0 1.5" rotation="0 1 0 1.5" id="tfA"></transform>
+
+			<x-data translation="1.5 0 1.5" rotation="0 1 0 1.5" id="tfB"></x-data>
+			
+			<group transform="#tfB">
+			<!-- <group style="transform: translate3d(1.5px, 0.5px, 0.5px);"> -->
+				<model src="#text"></model>
 			</group>
 			
 			<!-- View with camera positioning -->

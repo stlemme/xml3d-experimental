@@ -1,26 +1,26 @@
 <link rel="import" href="polymer/polymer.html">
-<dom-module name="x-comp">
-	<!-- <template>
+<dom-module id="x-group">
+	<style>
+		mesh * {
+			display: none;
+		}
+	</style>
+	<template>
 		<mesh material="../text/text.xml#shader-alphatest">
 			<float3 name="diffuseColor">0 0.57 0.57</float3>
 			<data compute="dataflow['../text/text.xml#gentext']">
 				<data src="../text/text.xml#config"></data>
-				<string name="text"><content></content></string>
+				<string name="text">{{value}}</string>
 			</data>
 		</mesh>
-	</template> -->
-	<template>
-		<model src="../text/text.xml#bitmap-alphatest">
-			<assetdata name="config">
-				<!-- <string name="text"><content></content></string> -->
-				<string name="text">{{value}}</string>
-			</assetdata>
-		</model>
 	</template>
 	
 	<script>
 	Polymer({
-		is: "x-comp"
+		is: "x-group",
+		properties: {
+			value: { type: String, value: "empty label"}
+		}
 	});
 	</script>
 </dom-module>
