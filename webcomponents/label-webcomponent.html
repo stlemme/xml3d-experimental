@@ -38,25 +38,13 @@
 <body>
 	<div id="myxml3d">
 		<xml3d id="myxml3dcanvas" view="#Camera" style="width: 800px; height: 600px; background-color: eeeeee;">
-
-			<data id="text-config">
-				<int name="resolution">32</int>
-				<int name="baseline">20</int>
-				<int name="fontsize">30</int>
-				<string name="text">[[undefined]]</string>
-			</data>
 			
-		    <material id="shader-alphatest" model="../text/text.xml#alphatest-shader-script">
-				<float3 name="diffuseColor">0 0 1</float3>
-			</material>
-
-
 			<template id="x-label" string="empty label">
-				<mesh material="#shader-alphatest">
+				<mesh material="../text/text.xml#shader-alphatest">
 					<float3 name="diffuseColor">0 0.57 0.57</float3>
 					<data compute="index = xflow.quads2triangles(position)">
 						<data compute="position, normal, texcoord, diffuseTexture = xflow.text(resolution, baseline, fontsize, text)">
-							<data src="#text-config"></data>
+							<data name="text-config" src="../text/text.xml#config"></data>
 							<string name="text">{{string}}</string>
 						</data>
 					</data>
