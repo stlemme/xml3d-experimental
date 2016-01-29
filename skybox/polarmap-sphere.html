@@ -1,0 +1,83 @@
+﻿<html>
+
+<head>
+	<title>Skybox - Polarmap</title>
+
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+
+	<script type="text/javascript" src="xml3d-5.0.4.js"></script>
+    <script type="text/javascript" src="camera-5.0.js"></script>
+    <script type="text/javascript" src="shade.js"></script>
+	
+	<script type="text/javascript" src="xflow-sphere.js"></script>
+
+	<script type="text/javascript">
+		var imgElem = null;
+		
+		window.addEventListener('load', function(e) {
+			var viewElem  = document.getElementById("view0b");
+			window.DemoCamera = new XML3D.StandardCamera(viewElem , {
+				mode: 'lookaround'
+			});
+			
+			imgElem = document.getElementById("polarmap");
+
+			var selElem = document.getElementById("box");
+			
+			if (window.location.hash) {
+				var hash = window.location.hash.substring(1); //Puts hash in variable, and removes the # character
+				var preElem = selElem.querySelector("[name=" + hash + "]");
+				if (preElem) preElem.selected = true;
+			}
+			
+			setPolarmap(selElem.value)
+		});
+		
+		function setPolarmap(imgpath) {
+			imgElem.src = imgpath;
+		}
+
+	</script>
+
+	<script id="polarmap-shader-script" type="text/shade-javascript">
+		function shade(env) {
+			return env.polarmapTexture.sample2D(env.texcoord).rgb();
+		}
+	</script>
+	
+</head>
+
+<body>
+	<div id="myxml3d">
+		<xml3d id="myxml3dcanvas" view="#view0b" style="width: 100%; height: 100%; background-color:0xeeeeee;">
+			
+			<material id="mat-polarmap" model="#polarmap-shader-script"></material>
+			
+			<mesh id="sphere" material="#mat-polarmap">
+				<texture name="polarmapTexture" wraps="repeat">
+					<img id="polarmap" src=""/>
+				</texture>
+				<data compute="position, normal, texcoord, index = xflow.sphere(segments, phi, theta)">
+					<int name="segments">20 15</int>
+					<float name="phi">0 1</float>
+					<float name="theta">0 1</float>
+				</data>
+			</mesh>
+			
+			<view id="view0b"></view>
+		</xml3d>
+	</div>
+	<div id="selection">
+		<select id="box" onchange="setPolarmap(this.value);">
+			<option value="images/polarmap_20150510_122949_4k.jpg" name="kehl4k">Kehl (4k)</option>
+			<option value="images/polarmap_20150510_122949_8k.jpg" name="kehl8k">Kehl (8k)</option>
+			<!-- <option value="images/backyard_stitch-1.jpg">Backyard (1k)</option> -->
+			<option value="images/polarmap_20160117_141313_4k.jpg" name="parey4k">Parey (4k)</option>
+		</select> 
+	</div>
+	<div id="logo">
+		<img src="images/xml3dlogo.png">
+	</div>
+</body>
+
+</html>
