@@ -14,7 +14,7 @@
 			<int name="segments">1 1 1</int>
 			<float3 name="extend">2 2 2</float3>
 		</assetdata>
-		<assetmesh compute="dataflow['http://stlemme.github.io/xflow-registry/dataflow/geometry.xml#gen-box']" includes="export"></assetmesh>
+		<assetmesh compute="dataflow['http://xml3d.github.io/xflow-registry/dataflow/geometry.xml#gen-box']" includes="export"></assetmesh>
 	</asset>
 	
 </xml3d>
