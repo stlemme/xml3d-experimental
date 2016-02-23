@@ -1,0 +1,17 @@
+<template id='bbox-inspector' name='x-bounding-box'>
+	<style> @import '../../xml3d-components/xml3d-component.css'; </style>
+
+	<material id='bboxm' model='urn:xml3d:material:flat'>
+		<content select="float3[name='diffuseColor']">
+			<float3 name='diffuseColor'>0 1 0</float3>
+		</content>
+	</material>
+	
+	<data id='bboxdata' compute='position, vertexCount = xflow.genLinesFromBBox(bbox)'>
+		<content select="float3[name='bbox']">
+			<float3 name='bbox'>0 0 0 0 0 0</float3>
+		</content>
+	</data>
+	
+	<mesh material="#bboxm" src='#bboxdata' type='linestrips'></mesh>
+</template>

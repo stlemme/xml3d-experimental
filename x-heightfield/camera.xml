@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+	<transform id="t_Camera_0"></transform>
+	<transform id="t_Camera_a" translation="29.752 14.970 31.171" rotation="-0.394 0.910 0.131 0.826"></transform>
+
+	<dataflow id="transform" out="transform">
+		<script name="xflow.fromAxisAngle" type="text/javascript" src="operators/xflow-fromaxisangle.js"></script>
+		<float3 name="translation" param="true"></float3>
+		<float4 name="rotation" param="true"></float4>
+		<compute>
+			quat = xflow.fromAxisAngle(rotation);
+			transform = xflow.createTransform(translation, quat);
+		</compute>
+	</dataflow>
+
+	<dataflow id="lookat" out="transform">
+		<script name="xflow.lookat" type="text/javascript" src="operators/xflow-lookat.js"></script>
+		<float3 name="from" param="true">1 1 1</float3>
+		<float3 name="to" param="true">0 0 0</float3>
+		<float3 name="up">0 1 0</float3>
+		<compute>
+			transform = xflow.lookat(from, to, up);
+		</compute>
+	</dataflow>
+	
+	<data id="t_Camera_b" compute="transform = xflow.createTransform()">
+		<float3 name="translation">29.752 14.970 31.171</float3>
+		<data compute="xflow.fromAxisAngle()">
+			<float4 name="rotation">-0.394 0.910 0.131 0.826</float4>
+		</data>
+	</data>
+
+	<data id="t_Camera_c" compute="dataflow['#transform']">
+		<float3 name="translation">29.752 14.970 31.171</float3>
+		<float4 name="rotation">-0.394 0.910 0.131 0.826</float4>
+	</data>
+
+	<data id="t_Camera_d" compute="dataflow['#lookat']">
+		<float3 name="from">29.752 14.970 31.171</float3>
+		<float3 name="to">0 0 0</float3>
+	</data>
+	
+</xml3d>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml3d xmlns="http://www.w3.org/1999/xhtml">
+
+	<dataflow id="heightfield" output="position, normal, index, type">
+		<script name="xflow.grid" type="text/javascript" src="operators/xflow-grid.js"></script>
+		<script name="xflow.elevation" type="text/javascript" src="operators/xflow-elevation.js"></script>
+		<script name="xflow.imagesize" type="text/javascript" src="operators/xflow-imagesize.js"></script>
+		<script name="xflow.vertexNormal" type="text/javascript" src="operators/xflow-vertexnormal.js"></script>
+		<texture name="heightmap" param="true"></texture>
+		<float3 name="scale" param="true">0 0.4 0</float3>
+		<string name="type" param="true">tristrips</string>
+		<compute>
+			elevation = xflow.elevation(heightmap);
+			dimensions = xflow.imagesize(heightmap);
+			position, normal, texcoord, index = xflow.grid(dimensions, type);
+			position = xflow.morph(position, scale, elevation);
+			normal = xflow.vertexNormal(position, index, type);
+		</compute>
+	</dataflow>
+	
+</xml3d>

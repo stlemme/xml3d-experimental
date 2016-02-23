@@ -1,0 +1,62 @@
+<html>
+
+<head>
+	<title>Heightfield Examples</title>
+	<!-- Style -->
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+	<!-- Scripts -->
+	<script type="text/javascript" src="/projects/xml3d.js/build/output/xml3d.js"></script>
+	<!-- <script type="text/javascript" src="/projects/xml3d.js/tools/camera.js"></script> -->
+	
+	<script type="text/javascript">
+		window.addEventListener("load", function() {
+			var viewElem = document.getElementById("Camera");
+			//window.DemoCamera = new XML3D.StandardCamera(viewElem, {
+			//	mode:"examine"
+			//});
+
+			XML3D.options.setValue("renderer-faceculling", "back");
+		});
+	</script>
+</head>
+
+<body>
+<div id="container">
+<xml3d id="myxml3d" class="xml3d" view="#Camera" style="width: 100%; height: 100%;">
+
+	<material id="Material" model="urn:xml3d:material:phong">
+		<float name="ambientIntensity">0.4</float>
+		<float3 name="diffuseColor">0.6 0.6 0.6</float3>
+		<float3 name="specularColor">0.8 0.8 0.8</float3>
+		<float name="shininess">0.978473581213</float>
+	</material>
+
+	
+	<view id="Camera" transform="camera.xml#t_Camera_d"></view>
+	
+	<group material="#Material" style="transform: scale3d(25, 25, 25);">
+	
+		<mesh type="derived" compute="dataflow['xflow.xml#heightfield']">
+			<texture name="heightmap">
+				<img src="YukonHeightField2.png">
+			</texture>
+		</mesh>
+		
+		<x-heightfield src="YukonHeightField2.png"></x-heightfield>
+	</group>
+	
+	
+	
+	<!-- Light Source: -->     
+	<group style="transform: translate3d(2.09px, 10.65px, 1.16px) rotate3d(0.206, 0.332, 0.921, 1.926rad);">
+		<light model="urn:xml3d:light:directional">
+			<!-- <float3 name="attenuation">1 0.033333 1</float3> -->
+			<float3 name="intensity">1 1 1</float3>
+		</light>
+	</group>
+
+</xml3d>
+</div>
+</body>
+
+</html>
