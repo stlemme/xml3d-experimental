@@ -1,0 +1,17 @@
+<link rel="import" href="polymer/polymer.html">
+
+<dom-module id="x-heightfield">
+<template>
+	<mesh type="derived" compute="dataflow['xflow.xml#heightfield']">
+		<texture name="heightmap">
+			<img src="YukonHeightField2.png">
+		</texture>
+	</mesh>
+</template>
+
+<script>
+	Polymer({
+		is: "x-heightfield"
+	});
+</script>
+</dom-module>
