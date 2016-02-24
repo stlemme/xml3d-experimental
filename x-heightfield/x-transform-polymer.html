@@ -1,18 +1,17 @@
 <link rel="import" href="polymer/polymer.html">
 
-<dom-module id="x-heightfield">
+<dom-module id="x-transform">
 <template>
 	<style> float,float2,float3,float4,float4x4,int,int4,bool,script,img { display: none; } mesh,group,model { position: absolute; } </style>
-	<mesh type="derived" compute="dataflow['xflow.xml#heightfield']">
-		<texture name="heightmap">
-			<img src="{{src}}">
-		</texture>
-	</mesh>
+	<data compute="dataflow['camera.xml#transform']">
+		<float3 name="translation">{{translation}}</float3>
+		<float4 name="rotation">{{rotation}}</float4>
+	</data>
 </template>
 
 <script>
 	Polymer({
-		is: "x-heightfield"
+		is: "x-transform"
 	});
 </script>
 </dom-module>

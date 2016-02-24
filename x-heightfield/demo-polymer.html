@@ -9,12 +9,13 @@
 	<!-- <script type="text/javascript" src="/projects/xml3d.js/tools/camera.js"></script> -->
 	<script src="webcomponentsjs/webcomponents-lite.min.js"></script>
 	
-	<!-- <script>
+	<script>
 		window.Polymer = window.Polymer || {};
 		window.Polymer.dom = 'shadow';
-	</script> -->
+	</script>
 	
-	<link rel="import" href="x-heightfield.html"/>
+	<link rel="import" href="x-heightfield-polymer.html"/>
+	<link rel="import" href="x-transform-polymer.html"/>
 	
 	<script type="text/javascript">
 		window.addEventListener("load", function() {
@@ -40,7 +41,9 @@
 		<float name="shininess">0.978473581213</float>
 	</material>
 
-	<view id="Camera" transform="camera.xml#t_Camera_d"></view>
+	<x-transform id="t_Camera_e" translation="29.752 14.970 31.171" rotation="-0.394 0.910 0.131 0.826"></x-transform>
+	
+	<view id="Camera" transform="#t_Camera_e"></view>
 	
 	<group material="#Material" style="transform: scale3d(25, 25, 25);">
 	
