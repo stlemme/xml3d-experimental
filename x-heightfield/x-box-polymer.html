@@ -1,0 +1,24 @@
+<link rel="import" href="polymer/polymer.html">
+
+<dom-module id="x-box">
+<template>
+	<style> float,float2,float3,float4,float4x4,int,int4,bool,script,img { display: none; } mesh,group,model { position: absolute; } </style>
+	<mesh type="derived" compute="dataflow['http://xml3d.github.io/xflow-registry/dataflow/geometry.xml#gen-box']">
+		<int name="segments">2 2 2</int>
+		<float3 name="extend">{{extend}}</float3>
+		<string name="type">triangles</string>
+	</mesh>
+	<group style="transform: translate3d(3px, 3px, 0px);">
+		<x-sphere></x-sphere>
+	</group>
+	<group style="transform: translate3d(-3px, 3px, 0px);">
+		<content select=".upper"></content>
+	</group>
+</template>
+
+<script>
+	Polymer({
+		is: "x-box"
+	});
+</script>
+</dom-module>

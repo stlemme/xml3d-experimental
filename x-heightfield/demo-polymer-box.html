@@ -14,8 +14,8 @@
 		window.Polymer.dom = 'shadow';
 	</script>
 	
-	<link rel="import" href="x-heightfield-polymer.html"/>
-	<link rel="import" href="x-transform-polymer.html"/>
+	<link rel="import" href="x-box-polymer.html"/>
+	<link rel="import" href="x-sphere-polymer.html"/>
 	
 	<script type="text/javascript">
 		window.addEventListener("load", function() {
@@ -41,16 +41,21 @@
 		<float name="shininess">0.978473581213</float>
 	</material>
 
-	<x-transform id="t_Camera_e" translation="29.752 14.970 31.171" rotation="-0.394 0.910 0.131 0.826"></x-transform>
+	<data id="t_Camera_f" compute="dataflow['camera.xml#lookat']">
+		<float3 name="from">12 8 8</float3>
+		<float3 name="to">0 0 0</float3>
+	</data>
 	
-	<view id="Camera" transform="#t_Camera_e"></view>
+	<view id="Camera" transform="#t_Camera_f"></view>
 	
-	<group material="#Material" style="transform: scale3d(25, 25, 25);">
+	<group material="#Material">
 	
-		<x-heightfield src="YukonHeightField2.png"></x-heightfield>
-		
+		<x-box extend="6 6 6">
+			<x-sphere class="upper left front"></x-sphere>
+		</x-box>
+	
 	</group>
-		
+	
 	<!-- Light Source: -->     
 	<group style="transform: translate3d(2.09px, 10.65px, 1.16px) rotate3d(0.206, 0.332, 0.921, 1.926rad);">
 		<light model="urn:xml3d:light:directional">

@@ -1,0 +1,19 @@
+<link rel="import" href="polymer/polymer.html">
+
+<dom-module id="x-sphere">
+<template>
+	<style> float,float2,float3,float4,float4x4,int,int4,bool,script,img { display: none; } mesh,group,model { position: absolute; } </style>
+	<mesh type="derived" compute="dataflow['http://xml3d.github.io/xflow-registry/dataflow/geometry.xml#gen-sphere']">
+		<int name="segments">80 60</int>
+		<float name="phi">0 1</float>
+		<float name="theta">0 1</float>
+		<string name="type">triangles</string>
+	</mesh>
+</template>
+
+<script>
+	Polymer({
+		is: "x-sphere"
+	});
+</script>
+</dom-module>
