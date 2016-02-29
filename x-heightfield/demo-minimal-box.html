@@ -1,0 +1,86 @@
+<html>
+
+<head>
+	<title>Heightfield Examples</title>
+	<!-- Style -->
+	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
+	<!-- Scripts -->
+	<script type="text/javascript" src="/projects/xml3d.js/build/output/xml3d.js"></script>
+	<!-- <script type="text/javascript" src="/projects/xml3d.js/tools/camera.js"></script> -->
+	<script src="xml3d-webcomponents.js"></script>
+	
+	<script type="text/javascript">
+		window.addEventListener("load", function() {
+			var viewElem = document.getElementById("Camera");
+			//window.DemoCamera = new XML3D.StandardCamera(viewElem, {
+			//	mode:"examine"
+			//});
+
+			XML3D.options.setValue("renderer-faceculling", "back");
+		});
+	</script>
+
+</head>
+
+<body>
+<div id="container">
+<xml3d id="myxml3d" class="xml3d" view="#Camera" style="width: 100%; height: 100%;">
+
+	<template id="x-box" extend="2 2 2">
+		<mesh type="derived" compute="dataflow['http://xml3d.github.io/xflow-registry/dataflow/geometry.xml#gen-box']">
+			<int name="segments">2 2 2</int>
+			<float3 name="extend">{{extend}}</float3>
+			<string name="type">triangles</string>
+		</mesh>
+		<group style="transform: translate3d(3px, 3px, 0px);">
+			<x-sphere></x-sphere>
+		</group>
+		<group style="transform: translate3d(-3px, 3px, 0px);">
+			<content select=".upper"></content>
+		</group>
+	</template>
+	
+	<template id="x-sphere">
+		<mesh type="derived" compute="dataflow['http://xml3d.github.io/xflow-registry/dataflow/geometry.xml#gen-sphere']">
+			<int name="segments">80 60</int>
+			<float name="phi">0 1</float>
+			<float name="theta">0 1</float>
+			<string name="type">triangles</string>
+		</mesh>
+	</template>
+
+	<material id="Material" model="urn:xml3d:material:phong">
+		<float name="ambientIntensity">0.4</float>
+		<float3 name="diffuseColor">0.6 0.6 0.6</float3>
+		<float3 name="specularColor">0.8 0.8 0.8</float3>
+		<float name="shininess">0.978473581213</float>
+	</material>
+
+	<data id="t_Camera_f" compute="dataflow['camera.xml#lookat']">
+		<float3 name="from">12 8 8</float3>
+		<float3 name="to">0 0 0</float3>
+	</data>
+	
+	<view id="Camera" transform="#t_Camera_f"></view>
+	
+	<group material="#Material">
+	
+		<x-box extend="6 6 6">
+			<x-sphere class="upper left front"></x-sphere>
+		</x-box>
+	
+	</group>
+	
+	<!-- Light Source: -->     
+	<group style="transform: translate3d(2.09px, 10.65px, 1.16px) rotate3d(0.206, 0.332, 0.921, 1.926rad);">
+		<light model="urn:xml3d:light:directional">
+			<!-- <float3 name="attenuation">1 0.033333 1</float3> -->
+			<float3 name="intensity">1 1 1</float3>
+		</light>
+	</group>
+
+</xml3d>
+</div>
+</body>
+
+</html>
