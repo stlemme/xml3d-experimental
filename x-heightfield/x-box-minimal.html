@@ -1,0 +1,13 @@
+<template name="x-box" extend="2 2 2" segments="2 2 2">
+	<mesh type="derived" compute="dataflow['http://xml3d.github.io/xflow-registry/dataflow/geometry.xml#gen-box']">
+		<int name="segments">{{segments}}</int>
+		<float3 name="extend">{{extend}}</float3>
+		<string name="type">triangles</string>
+	</mesh>
+	<group style="transform: translate3d(3px, 3px, 0px);">
+		<x-sphere></x-sphere>
+	</group>
+	<group style="transform: translate3d(-3px, 3px, 0px);">
+		<content select=".upper"></content>
+	</group>
+</template>
