@@ -6,15 +6,6 @@
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 	<!-- Scripts -->
 	<script type="text/javascript" src="/projects/xml3d.js/build/output/xml3d.js"></script>
-	<!-- <script type="text/javascript" src="/projects/xml3d.js/tools/camera.js"></script> -->
-	<script src="webcomponentsjs/webcomponents-lite.min.js"></script>
-	
-	<!-- <script>
-		window.Polymer = window.Polymer || {};
-		window.Polymer.dom = 'shadow';
-	</script> -->
-	
-	<link rel="import" href="x-heightfield.html"/>
 	
 	<script type="text/javascript">
 		window.addEventListener("load", function() {
@@ -25,6 +16,8 @@
 
 			XML3D.options.setValue("renderer-faceculling", "back");
 		});
+		
+		XML3D.registerComponent('x-heightfield-minimal.html');
 	</script>
 
 </head>

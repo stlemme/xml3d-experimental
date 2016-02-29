@@ -1,0 +1,7 @@
+<template name="x-transform">
+	<style> float,float2,float3,float4,float4x4,int,int4,bool,script,img { display: none; } mesh,group,model { position: absolute; } </style>
+	<data compute="dataflow['camera.xml#transform']">
+		<float3 name="translation">{{translation}}</float3>
+		<float4 name="rotation">{{rotation}}</float4>
+	</data>
+</template>
