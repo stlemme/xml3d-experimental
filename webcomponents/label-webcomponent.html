@@ -6,10 +6,9 @@
 	<link rel="stylesheet" type="text/css" media="all" href="styles.css"/>
 
 	<!-- <script type="text/javascript" src="xml3d.js"></script> -->
-	<script type="text/javascript" src="/projects/xml3d.js/build/output/xml3d.js"></script>
+	<script type="text/javascript" src="xml3d.js"></script>
 	<script type="text/javascript" src="shade-0.2.js"></script>
-	<script type="text/javascript" src="../../xml3d-tools/camera.js"></script>
-	<script type="text/javascript" src="xml3d-webcomponents.js"></script>
+	<script type="text/javascript" src="camera.js"></script>
 	
     <script type="text/javascript">
 	
@@ -20,6 +19,7 @@
 				updateExaminePoint: true,
 				upVector: [0,1,0]
 			});
+			XML3D.registerComponent(document.querySelector("#x-label"), "x-label");
 		};
 		
 		window.addEventListener('load', onload);
@@ -36,15 +36,15 @@
 </head>
 
 <body>
-	<div id="myxml3d">
-		<xml3d id="myxml3dcanvas" view="#Camera" style="width: 800px; height: 600px; background-color: eeeeee;">
+	<div id="web3d">
+		<xml3d view="#Camera" style="width: 800px; height: 600px; background-color: eeeeee;">
 			
 			<template id="x-label" string="empty label">
 				<mesh material="../text/text.xml#shader-alphatest">
 					<float3 name="diffuseColor">0 0.57 0.57</float3>
 					<data compute="index = xflow.quads2triangles(position)">
 						<data compute="position, normal, texcoord, diffuseTexture = xflow.text(resolution, baseline, fontsize, text)">
-							<data name="text-config" src="../text/text.xml#config"></data>
+							<data src="../text/text.xml#config"></data>
 							<string name="text">{{string}}</string>
 						</data>
 					</data>
@@ -55,14 +55,14 @@
 				<float3 name="diffuseColor" >1 0.5 0</float3>
 				<float name="ambientIntensity" >0.5</float>
 			</material>
-			<transform id="tf_A" translation="2 0 -1.5" scale="0.05 0.05 0.05"></transform>
 			
-			<mesh src="teapot.json" transform="#tf_A" material="#orangePhong"></mesh>
+			<group style="transform: translate3d(2px, 0, -1.5px) scale3d(0.05, 0.05, 0.05)">
+				<mesh src="teapot.json" material="#orangePhong"></mesh>
+			</group>
 			
-			<x-group data-src="#x-label" string="Web Components"></x-group>
+			<x-label string="Web Components"></x-label>
 			
-			<!-- View with camera positioning -->
-			<transform id="Camera_tf" translation="3 5 10" rotation="1 0 0 -0.3854"></transform>
+			<transform id="Camera_tf" translation="0.3649860918521881 3.838972806930542 10.788372039794922" rotation="-0.6725473403930664 -0.7018442153930664 -0.23472164571285248 0.4786239564418793"></transform>
 			<view id="Camera" transform="#Camera_tf"></view>
 			
 			<light id="light1" model="urn:xml3d:light:directional" >

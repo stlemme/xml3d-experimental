@@ -1,0 +1,43 @@
+digraph g{
+graph [rankdir=LR,ordering=out,fontsize=14,fontname=Helvetica,bgcolor=transparent];
+node [shape=box,fontsize=14,fontname=Helvetica];
+//i_myxml3dcanvas -> i_x_label;
+//i_myxml3dcanvas -> i_tf_A;
+i_myxml3dcanvas -> i_group;
+i_myxml3dcanvas -> i_x_group0;
+i_x_group0 -> i_mesh0;
+i_mesh0 -> i_data0;
+i_data0 -> i_data1;
+//i_data1 -> i_data2;
+i_group -> i_mesh1;
+i_myxml3dcanvas -> i_Camera;
+
+edge [style=dashed,weight=1,tailport="e", fontname=Helvetica, fontsize=12]
+i_mesh0 -> file_0:frag0[label=material,tailport="s"];
+//i_data2 -> file_0:frag1;
+i_data1:4 -> file_0:frag1[label=src];
+//i_data1 -> file_0;
+//i_data1:1 -> i_x_group0[label=<attribute string>];
+i_mesh1 -> file_1[label=src];
+
+i_myxml3dcanvas[label="web3d",color="#632523",fillcolor="#c0504d",fontcolor="white",style="filled"];
+//i_x_label[label="template"]
+//i_tf_A[label="transform",color="#71893f",fillcolor="#9bbb59",fontcolor="white",style="filled"]
+i_mesh1[label="sg-mesh",color="#632523",fillcolor="#ff794c",fontcolor="white",style="filled"];
+i_x_group0[label="x-label"];
+
+subgraph cluster_i_x_group0 {
+//label = "shadow-root"
+i_mesh0[label=< <table border='0' cellborder='0'><tr><td>sg-mesh</td></tr><!-- <tr><td port="0" border="1" color="#5c4776" bgcolor="#8064a2">float3 diffuseColor</td></tr> --></table> >,color="#632523",fillcolor="#ff794c",fontcolor="white",style="filled"];
+i_data0[label=< <table border='0' cellborder='0'><tr><td>data</td></tr><tr><td port="2" border="1" color="#5c4776" bgcolor="#91bfdb">xflow.quads2triangles()</td></tr></table> >,color="#385D8A",fillcolor="#4F81BD",fontcolor="white",style="filled"];
+i_data1[label=< <table border='0' cellborder='0'><tr><td>data</td></tr><tr><td port="3" border="1" color="#5c4776" bgcolor="#91bfdb">xflow.text()</td></tr><tr><td port="1" border="1" color="#5c4776" bgcolor="#8064a2">string text</td></tr><tr><td port="4" border="1" color="#385D8A" bgcolor="#4F81BD">data</td></tr></table> >,color="#385D8A",fillcolor="#4F81BD",fontcolor="white",style="filled"];
+//i_data2[label="data",color="#385D8A",fillcolor="#4F81BD",fontcolor="white",style="filled"];
+}
+
+i_group[label="group",color="#632523",fillcolor="#c0504d",fontcolor="white",style="filled"];
+i_Camera[label="camera",color="#632523",fillcolor="#c0504d",fontcolor="white",style="filled"];
+file_0[shape=folder,fillcolor=white,style=filled,label=<<table border='0' cellborder='1'><tr><td bgcolor='#e3e3e3'>text.xml</td></tr><tr><td port="frag1">#font-config</td></tr><tr><td port="frag0">#shader-alphatest</td></tr></table>>];
+
+file_1[shape=folder,fillcolor=white,style=filled,label=<<table border='0' cellborder='1'><tr><td bgcolor='#e3e3e3'>teapot.json</td></tr></table>>];
+
+}

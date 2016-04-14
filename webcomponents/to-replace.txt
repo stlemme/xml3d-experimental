@@ -1,0 +1,9 @@
+<sg-mesh material="../text/text.xml#shader-alphatest">
+	<value type="float3" name="diffuseColor">0 0.57 0.57</value>
+	<data compute="xflow.quads2triangles(position)">
+		<data compute="{position:pos, normal:norm, texcoord:tc, diffuseTexture:bitmap} = xflow.text()">
+			<data src="../text/text.xml#config"></data>
+			<value type="string" name="text">Web Components</value>
+		</data>
+	</data>
+</sg-mesh>
