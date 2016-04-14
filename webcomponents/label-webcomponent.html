@@ -51,19 +51,29 @@
 				</mesh>
 			</template>
 			
-			<transform id="tf_A" translation="1 0.5 -1.5"></transform>
-			<!-- Asset Instance -->
-			<model src="../text/basic.xml#box" transform="#tf_A"></model>
+			<material id="orangePhong" model="urn:xml3d:material:phong">
+				<float3 name="diffuseColor" >1 0.5 0</float3>
+				<float name="ambientIntensity" >0.5</float>
+			</material>
+			<transform id="tf_A" translation="2 0 -1.5" scale="0.05 0.05 0.05"></transform>
 			
-			<x-group data-src="#x-label" string="Saarland University"></x-group>
+			<mesh src="teapot.json" transform="#tf_A" material="#orangePhong"></mesh>
+			
+			<x-group data-src="#x-label" string="Web Components"></x-group>
 			
 			<!-- View with camera positioning -->
 			<transform id="Camera_tf" translation="3 5 10" rotation="1 0 0 -0.3854"></transform>
 			<view id="Camera" transform="#Camera_tf"></view>
+			
+			<light id="light1" model="urn:xml3d:light:directional" >
+				<float3 name="intensity" >1 1 1</float3>
+			</light>
 
 		</xml3d>
 	</div>
-	<!-- <div id="debug" style="padding-top: 30px; background: 888888;"></div> -->
+	<div id="graph">
+		<img src="x-label-graph.dot.png">
+	</div>
 </body>
 
 </html>
